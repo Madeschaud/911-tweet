@@ -1,5 +1,5 @@
 import pandas
-from Preprocessing.sentence_cleaning import cleaning
+from Preprocessing.sentence_cleaning import sentence_cleaning
 
 def nbwords(sentence):
     if isinstance(sentence, str) :
@@ -7,9 +7,9 @@ def nbwords(sentence):
     return 0
 
 def cleaning():
-    data = pandas.read_csv('Data/disaster_tweet.csv')
-    data['tweet_clean'] = data['tweet_text'].apply(cleaning)
-    data = data.dropna()
+    data = pandas.read_csv('Data/tweet_data_consolidated.csv')
+    data['tweet_clean'] = data['tweet_text'].apply(sentence_cleaning)
+    # data = data.dropna()
     data = data.drop_duplicates()
 
     data['words_per_tweet'] = data['tweet_clean'].apply(nbwords)

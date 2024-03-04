@@ -12,4 +12,5 @@ def preprocessor_all():
         cleaning()
 
     data_cleaned = pandas.read_csv('Data/clean_data.csv')
+    print(data_cleaned)
     #vectorizer(data_cleaned)
