@@ -1,6 +1,7 @@
 from colorama import Fore
 import string
 from nltk.stem import WordNetLemmatizer
+import re
 
 from nltk.corpus import stopwords
 
@@ -17,6 +18,7 @@ def remove_punctuation(sentence, activate):
         for punctuation in string.punctuation:
             sentence = sentence.replace(punctuation, '')
         return sentence
+
     return sentence
 
 def remove_stop_words(sentence, activate):
@@ -31,3 +33,17 @@ def lemmatize(sentence, activate):
     if activate is True :
         return [WordNetLemmatizer().lemmatize(word) for word in sentence]
     return sentence
+
+def remove_hashtags(sentence):
+    hashtag_regex = r'#\w+'
+    return re.sub(hashtag_regex, '', sentence)
+
+def remove_at(sentence):
+    at_regex = r'@\w+'
+    return re.sub(at_regex, '', sentence)
+
+def remove_rt(sentence):
+    rt_regex = r'\bRT\b\s?:?@\w+'
+    if sentence[0:2] == 'RT ':
+        return sentence[3:]
+    return re.sub(rt_regex, '', sentence)
