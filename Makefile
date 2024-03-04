@@ -3,3 +3,6 @@ run_preprocess:
 
 run_main:
 	@python -c 'from main import main; main()'
+
+install_dep:
+	pip install -r requirements.txt
