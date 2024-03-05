@@ -7,5 +7,8 @@ run_main:
 run_vectorizer:
 	@python -c 'from Preprocessing.vectorizer import vectorizer; vectorizer()'
 
+save_model:
+	@python -c 'from registry import save_model; save_model()'
+	
 install_dep:
 	pip install -r requirements.txt

@@ -42,9 +42,11 @@ def vectorizer(data=pd.read_csv('Data/clean_data.csv', index_col=0)):
         cv=10,
         scoring=scoring,
         n_jobs=-1,
+        refit="accuracy",
         verbose=1
     )
 
+    # Perform Random Search on pipeline
     random_search = RandomizedSearchCV(
         mnb_pipe,
         params,
@@ -55,13 +57,14 @@ def vectorizer(data=pd.read_csv('Data/clean_data.csv', index_col=0)):
         n_jobs=-1
     )
 
-    # grid_search.fit(X_train.tweet_clean, y_train)
-    random_search.fit(X_train.tweet_clean, y_train)
-    i = random_search.best_index_
-    best_precision = random_search.cv_results_['mean_test_precision_macro'][i]
-    best_recall = random_search.cv_results_['mean_test_recall_macro'][i]
+    grid_search.fit(X_train.tweet_clean, y_train)
+    # random_search.fit(X_train.tweet_clean, y_train)
+    i = grid_search.best_index_
+    best_precision = grid_search.cv_results_['mean_test_precision'][i]
+    best_recall = grid_search.cv_results_['mean_test_recall'][i]
 
-    print('Best score (accuracy): {}'.format(random_search.best_score_))
+
+    print('Best score (accuracy): {}'.format(grid_search.best_score_))
     print('Mean precision: {}'.format(best_precision))
     print('Mean recall: {}'.format(best_recall))
-    print('Best parametes: {}'.format(random_search.best_params_))
+    print('Best parametes: {}'.format(grid_search.best_params_))
