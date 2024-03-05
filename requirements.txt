@@ -9,3 +9,4 @@ pandas
 matplotlib
 seaborn
 scikit-learn
+xgboost

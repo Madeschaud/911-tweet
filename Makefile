@@ -13,6 +13,9 @@ run_baseline:
 boost_naive_base:
 	@python -c 'from Model.boost_naive_base import boost_naive_base; boost_naive_base()'
 
+xg_boost:
+	@python -c 'from Model.xg_boost import xg_boost; xg_boost()'
+
 save_model:
 	@python -c 'from registry import save_model; save_model()'
 
