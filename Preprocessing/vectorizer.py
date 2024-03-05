@@ -2,12 +2,10 @@ from colorama import Fore
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
-from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
 from sklearn.pipeline import make_pipeline, Pipeline
-from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
 from tempfile import mkdtemp
-from sklearn.model_selection import cross_val_score
 
 
 
@@ -35,17 +33,35 @@ def vectorizer(data=pd.read_csv('Data/clean_data.csv', index_col=0)):
         'tfidfvectorizer__min_df': (0.003,0.004, 0.005, 0.006),
         'tfidfvectorizer__max_df': (0.6, 0.65,  0.7, 0.75)
     }
+    scoring = ['accuracy', 'precision', 'recall']
+
     # Perform grid search on pipeline
-    search = GridSearchCV(
+    grid_search = GridSearchCV(
         mnb_pipe,
         param_grid=params,
         cv=10,
-        scoring='recall',
+        scoring=scoring,
         n_jobs=-1,
         verbose=1
     )
 
-    search.fit(X_train.tweet_clean, y_train)
+    random_search = RandomizedSearchCV(
+        mnb_pipe,
+        params,
+        cv=10,
+        scoring=scoring,
+        n_iter=100,
+        refit="accuracy",
+        n_jobs=-1
+    )
 
-    print(search.best_params_)
-    print(search.best_score_)
+    # grid_search.fit(X_train.tweet_clean, y_train)
+    random_search.fit(X_train.tweet_clean, y_train)
+    i = random_search.best_index_
+    best_precision = random_search.cv_results_['mean_test_precision_macro'][i]
+    best_recall = random_search.cv_results_['mean_test_recall_macro'][i]
+
+    print('Best score (accuracy): {}'.format(random_search.best_score_))
+    print('Mean precision: {}'.format(best_precision))
+    print('Mean recall: {}'.format(best_recall))
+    print('Best parametes: {}'.format(random_search.best_params_))
