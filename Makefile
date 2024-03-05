@@ -6,3 +6,6 @@ run_main:
 
 install_dep:
 	pip install -r requirements.txt
+
+save_model:
+  @python -c ‘from registry import save_model; save_model()’
