@@ -13,6 +13,9 @@ run_baseline:
 boost_naive_base:
 	@python -c 'from Model.boost_naive_base import boost_naive_base; boost_naive_base()'
 
+run_simple_gru:
+	@python -c 'from Model.simple_gru import GRU_model; GRU_model()'
+
 save_model:
 	@python -c 'from registry import save_model; save_model()'
 
