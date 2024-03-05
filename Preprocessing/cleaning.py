@@ -1,18 +1,16 @@
-import pandas
-from Preprocessing.sentence_cleaning import sentence_cleaning
-
-def nbwords(sentence):
-    if isinstance(sentence, str) :
-        return len(sentence.split())
-    return 0
-
-def cleaning():
-    data = pandas.read_csv('Data/tweet_data_consolidated.csv')
-    data['tweet_clean'] = data['tweet_text'].apply(sentence_cleaning)
-    # data = data.dropna()
-    data = data.drop_duplicates()
-
-    data['words_per_tweet'] = data['tweet_clean'].apply(nbwords)
-    data = data[~(data['words_per_tweet'] == 0)]
-
-    data.to_csv('Data/clean_data.csv', index=True)
+from Preprocessing.sub_cleaning import Fore, remove_nb, remove_punctuation, remove_space_lowercase, remove_stop_words, lemmatize, remove_rt, remove_at, remove_hashtags
+from nltk import word_tokenize
+def sentence_cleaning(sentence):
+    '''Cleaning function ! Put True or False to enable or disable some part of the cleaning'''
+    # print(Fore.BLUE + 'Cleaning in preprocess')
+    sentence = remove_rt(sentence)
+    sentence = remove_hashtags(sentence)
+    sentence = remove_at(sentence)
+    sentence = remove_space_lowercase(sentence, True)
+    sentence = remove_nb(sentence, True)
+    sentence = remove_punctuation(sentence, True)
+    sentence = word_tokenize(sentence)
+    sentence = remove_stop_words(sentence, True)
+    sentence = lemmatize(sentence, True)
+    sentence = ' '.join(sentence)
+    return sentence

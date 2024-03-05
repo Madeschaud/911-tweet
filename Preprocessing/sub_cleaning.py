@@ -18,7 +18,6 @@ def remove_punctuation(sentence, activate):
         for punctuation in string.punctuation:
             sentence = sentence.replace(punctuation, '')
         return sentence
-
     return sentence
 
 def remove_stop_words(sentence, activate):
