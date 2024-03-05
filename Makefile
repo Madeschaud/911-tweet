@@ -8,4 +8,7 @@ install_dep:
 	pip install -r requirements.txt
 
 save_model:
-  @python -c ‘from registry import save_model; save_model()’
+	@python -c 'from registry import save_model, save_results; save_model(), save_results()'
+
+load_model:
+	@python -c 'from registry import load_model; load_model()'
