@@ -1,6 +1,6 @@
 from colorama import Fore
 from Preprocessing.cleaning import sentence_cleaning
-from Preprocessing.vectorizer import vectorizer
+from Model.boost_naive_base import vectorizer
 import os
 import pandas
 
