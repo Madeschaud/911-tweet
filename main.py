@@ -10,6 +10,5 @@ def main():
 
     data_cleaned = pandas.read_csv('Data/clean_data.csv')
 
-    print(data_cleaned)
+    print(len(data_cleaned))
     print(data_cleaned['words_per_tweet'].mean())
-

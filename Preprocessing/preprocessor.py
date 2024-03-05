@@ -5,9 +5,9 @@ import pandas
 def preprocessor():
     '''Preprocessor function - 1st step : cleaning'''
     print(Fore.GREEN + 'Prepocessor function')
-    data = pandas.read_csv('Data/disaster_tweet.csv')
+    data = pandas.read_csv('Data/tweet_data_consolidated.csv')
     data['tweet_clean'] = data['tweet_text'].apply(cleaning)
-    data = data.dropna()
+    # data = data.dropna()
     data = data.drop_duplicates()
 
     data['words_per_tweet'] = data['tweet_clean'].apply(nbwords)
