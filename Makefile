@@ -18,6 +18,9 @@ model_lstm:
 run_simple_gru:
 	@python -c 'from Model.simple_gru import GRU_model; GRU_model()'
 
+run_cnn_model:
+	@python -c 'from Model.cnn import model_cnn; model_cnn()'
+
 save_model:
 	@python -c 'from registry import save_model; save_model()'
 
