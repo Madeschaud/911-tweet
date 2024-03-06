@@ -2,19 +2,17 @@ from colorama import Fore
 import pandas as pd
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.model_selection import train_test_split, cross_val_predict
+from sklearn.model_selection import train_test_split
 from sklearn.pipeline import make_pipeline, Pipeline
-from sklearn.metrics import classification_report
 from tempfile import mkdtemp
 
-from tensorflow.keras.metrics import Recall
-from tensorflow.keras import layers
-from tensorflow.keras import models
-from tensorflow.keras import Sequential
-from tensorflow.keras.preprocessing.sequence import pad_sequences
-from tensorflow.keras.preprocessing.text import Tokenizer
-from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
-
+from tensorflow import keras
+from keras import layers
+from keras import models
+from keras import Sequential
+from keras.preprocessing.sequence import pad_sequences
+from keras.preprocessing.text import Tokenizer
+from keras.callbacks import EarlyStopping
 
 
 
@@ -55,13 +53,15 @@ def initialize_model(vocab_size):
 
     model = Sequential()
 
-    model.add(layers.Embedding(input_dim=vocab_size+1, output_dim=2, mask_zero=True))
+    model.add(layers.Embedding(input_dim=vocab_size+1, output_dim=2))
 
-    model.add(layers.GRU(units=64, activation='tanh', return_sequences=True))
-    model.add(layers.GRU(units=32, activation='tanh', return_sequences=True))
+    model.add(layers.Conv1D(20, kernel_size=3, activation='relu'))
+    model.add(layers.GlobalMaxPool1D())
 
-    model.add(layers.GRU(units=16, activation='tanh'))
+    model.add(layers.RNN(units=10, activation='tanh'))
 
+    model.add(layers.Dense(10, activation='relu'))
+    model.add(layers.Dense(5, activation='relu'))
 
     model.add(layers.Dense(1, activation='sigmoid'))
 
@@ -69,14 +69,14 @@ def initialize_model(vocab_size):
     model.compile(
             loss='binary_crossentropy',
             optimizer='adam',
-            metrics=['accuracy', Recall()]
+            metrics=['accuracy', 'recall']
     )
 
     return model
 
 
-def GRU_model():
-    print(Fore.YELLOW + 'Le GRU est lancé' + Fore.YELLOW)
+def cnn_rnn():
+    print(Fore.MAGENTA + 'CNN + RNN en cours' + Fore.MAGENTA)
 
     vocab_size, X_train_token, X_test_token = tokenize_data()
 
@@ -84,34 +84,15 @@ def GRU_model():
     X_train, X_test, y_train, y_test = split_data()
 
     model = initialize_model(vocab_size)
-    es = EarlyStopping(patience=10, restore_best_weights=True)
+    es = EarlyStopping(patience=5, restore_best_weights=True)
 
-    checkpoint = ModelCheckpoint(
-        filepath = '/tmp/weights.hdf5',
-        monitor = 'val_accuracy',
-        verbose = 1,
-        save_best_only = True,
-        save_weights_only = False,
-        mode = 'auto',
-        save_freq = 'epoch')
 
     history = model.fit(X_train_pad,
-                    y_train, batch_size=32,
-                    epochs=100,
+                    y_train, batch_size=16,
+                    epochs=5,
                     shuffle=True,
                     validation_split = 0.2, #IMPORTANT éviter le data leakage
-                    callbacks = [es, checkpoint],
-                    verbose = 1,
-                    )
-
+                    callbacks = [es],
+                    verbose = 1)
 
     print(history)
-
-def report():
-    # Generate the classification report
-    vocab_size, X_train_token, X_test_token = tokenize_data()
-    X_train_pad, X_test_pad = pad_data(X_train_token, X_test_token)
-    X_train, X_test, y_train, y_test = split_data()
-
-    y_pred = GRU_model.predict(X_test_pad) # Make cross validated predictions of entire dataset
-    print(classification_report(y_test,y_pred)) # Pass predictions and true values to Classification report
