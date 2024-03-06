@@ -102,4 +102,7 @@ def model_lstm():
     return model, X_test_pad, y_test
 
 
-  
+model, X_test_pad,y_test = model_lstm()
+y_pred_proba = model.predict(X_test_pad)
+y_pred= y_pred_proba > 0.6
+print(classification_report(y_test,y_pred)) # Pass predictions and true values to Classification report
