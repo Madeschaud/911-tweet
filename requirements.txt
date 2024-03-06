@@ -11,3 +11,6 @@ seaborn
 scikit-learn
 tensorflow
 mlflow
+
+#Models
+catboost
