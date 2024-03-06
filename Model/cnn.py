@@ -64,7 +64,7 @@ def initialize_model(vocab_size, max_len) -> keras.models:
 
     model.compile(loss='binary_crossentropy',
                 optimizer='adam',
-                metrics=['accuracy', Precision(), Recall()])
+                metrics=['accuracy', 'Precision', 'Recall'])
 
     return model
 
@@ -85,7 +85,7 @@ def model_cnn():
     model_checkpoint= ModelCheckpoint(filepath=filepath, save_best_only=True, monitor='val_accuracy')
     history = model.fit(
         X_train_pad, y_train,
-        epochs=5,  # Use early stopping in practice
+        epochs=50,  # Use early stopping in practice
         batch_size=32,
         validation_split=0.2,
         callbacks=[es, model_checkpoint],
