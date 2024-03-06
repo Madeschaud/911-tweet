@@ -1,6 +1,7 @@
 from colorama import Fore
 import pandas as pd
 import numpy as np
+import os
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split, cross_val_predict
 from sklearn.pipeline import make_pipeline, Pipeline
@@ -86,8 +87,12 @@ def GRU_model():
     model = initialize_model(vocab_size)
     es = EarlyStopping(patience=10, restore_best_weights=True)
 
+    checkpoint_path = "modelweights/model_gru.h5"
+    checkpoint_dir = os.path.dirname(checkpoint_path)
+
+
     checkpoint = ModelCheckpoint(
-        filepath = '/tmp/weights.hdf5',
+        filepath = checkpoint_path,
         monitor = 'val_accuracy',
         verbose = 1,
         save_best_only = True,
