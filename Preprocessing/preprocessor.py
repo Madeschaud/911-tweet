@@ -1,6 +1,5 @@
 from colorama import Fore
 from Preprocessing.cleaning import sentence_cleaning
-from Preprocessing.vectorizer import vectorizer
 import os
 import pandas
 
