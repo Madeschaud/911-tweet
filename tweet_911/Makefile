@@ -1,5 +1,5 @@
 reinstall_package:
-	@pip uninstall -y 911-tweet || :
+	@pip uninstall -y tweet_911 || :
 	@pip install -e .
 
 run_preprocess:
