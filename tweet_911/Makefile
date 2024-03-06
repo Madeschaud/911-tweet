@@ -28,6 +28,8 @@ model_deep_simple_gru:
 model_deep_bidirection_lstm:
 	@python -c 'from Model.bidirection_lstm import model_bidirectional_lstm; model_bidirectional_lstm()'
 
+model_deep_cnn_rnn:
+	@python -c 'from Model.cnn_rnn import cnn_rnn; cnn_rnn()'
 
 save_model:
 	@python -c 'from registry import save_model; save_model()'

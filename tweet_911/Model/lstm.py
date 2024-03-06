@@ -17,7 +17,7 @@ from tensorflow.keras.preprocessing.sequence import pad_sequences
 from tensorflow.keras.preprocessing.text import Tokenizer
 
 #sk
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, cross_val_predict
 
 # import data
 data =pd.read_csv('/Users/mathildedeschaud/code/Madeschaud/911-tweet/Data/clean_data.csv')
