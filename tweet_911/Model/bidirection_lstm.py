@@ -87,7 +87,7 @@ def model_bidirectional_lstm():
 
     #initialize
     print(Fore.MAGENTA + 'Le Bidirectional LSTM est lancé' + Fore.MAGENTA)
-    es = EarlyStopping(patience=10, restore_best_weights=True, monitor='val_precision')
+    es = EarlyStopping(patience=20, restore_best_weights=True, monitor='val_precision')
 
 
     # Train the model
@@ -95,7 +95,7 @@ def model_bidirectional_lstm():
     check = ModelCheckpoint(checkpoint_path, monitor='val_acc', verbose=1, save_best_only=True)
     history = model.fit(X_train_pad,
                     y_train, batch_size=32,
-                    epochs=100,
+                    epochs=1,
                     shuffle=True,
                     validation_split = 0.2, #IMPORTANT éviter le data leakage
                     callbacks = [es, check],
@@ -109,3 +109,13 @@ def model_bidirectional_lstm():
     y_pred = model.predict(X_test_pad) # Make cross validated predictions of entire dataset
     print(classification_report(y_test,(y_pred > 0.5).astype(int))) # Pass predictions and true values to Classification report
     return model
+
+
+#  precision    recall  f1-score   support
+
+#            0       0.89      0.86      0.87     25753
+#            1       0.65      0.71      0.68      9540
+
+#     accuracy                           0.82     35293
+#    macro avg       0.77      0.79      0.78     35293
+# weighted avg       0.83      0.82      0.82     35293
