@@ -38,7 +38,7 @@ save_model:
 	@python -c 'from registry import save_model; save_model()'
 
 install_dep:
-	pip install -r requirements.txt
+	pip install -r '../requirements.txt'
 
 save_model:
 	@python -c 'from registry import save_model, save_results; save_model(), save_results()'
