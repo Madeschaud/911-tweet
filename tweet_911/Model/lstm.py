@@ -1,23 +1,20 @@
 # Basic Imports
 import numpy as np
 import pandas as pd
-#from colorama import Fore
-
 
 
 # tensorflow
 import tensorflow as tf
 from tensorflow import keras
-from tensorflow.keras.datasets import imdb
-from tensorflow.keras.preprocessing import sequence
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Embedding, LSTM, Dense
-from tensorflow.keras import layers
+from keras.preprocessing import sequence
+from keras.models import Sequential
+from keras.layers import Embedding, LSTM, Dense
+from keras import layers
 
-from tensorflow.keras.preprocessing.sequence import pad_sequences
-from tensorflow.keras.preprocessing.text import Tokenizer
+from keras.preprocessing.sequence import pad_sequences
 from keras.callbacks import ModelCheckpoint, EarlyStopping
 
+from utils import split_data, tokenize_data, pad_data
 
 #sk
 from sklearn.model_selection import train_test_split
@@ -27,23 +24,6 @@ from sklearn.metrics import classification_report
 data =pd.read_csv('clean_data.csv')
 data.head()
 
-def split_data():
-    #identify X,y
-    X = data['tweet_clean']
-    y = data.actionable
-
-    #split data
-    return train_test_split( X, y, test_size=0.30, random_state=42)
-
-def tokenize_data(X_train, X_test):
-    # tokenize
-    tk =Tokenizer()
-    tk.fit_on_texts(X_train)
-
-    vocab_size = len(tk.word_index)
-    print(f'There are {vocab_size} different words in your corpus')
-
-    return vocab_size, tk.texts_to_sequences(X_train), tk.texts_to_sequences(X_test)
 
 def initialize_model(vocab_size):
     # build model

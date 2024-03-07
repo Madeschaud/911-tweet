@@ -1,51 +1,18 @@
 import numpy as np
 import pandas as pd
 from colorama import Fore
-from sklearn.preprocessing import StandardScaler, MinMaxScaler, RobustScaler
-from sklearn.model_selection import cross_val_score, train_test_split
-from sklearn.linear_model import LinearRegression, LogisticRegression
+
 from sklearn.metrics import classification_report
 
 from tensorflow import keras
 from keras.models import Sequential
 from keras.layers import Embedding, Dense, MaxPool1D, Conv1D, Flatten, Dropout
 from keras.callbacks import EarlyStopping, ModelCheckpoint
-from keras.optimizers import Adam, RMSprop
-from keras.preprocessing import sequence
-from keras.preprocessing.text import Tokenizer
-from keras.metrics import Accuracy, Recall, Precision
 
-def split_data(data=pd.read_csv('Data/clean_data.csv', index_col=0)) -> tuple:
-    X = data['tweet_text']
-    y = data.actionable
+from utils import split_data, tokenize_data, pad_data
 
-    # Split into Train/Test
-    return train_test_split(X, y, test_size=0.3)
 
-def tokenize_data():
-    X_train, X_test, y_train, y_test = split_data()
-    # This initializes a Keras utilities that does all the tokenization for you
-    tokenizer = Tokenizer()
 
-    # The tokenization learns a dictionary that maps a token (integer) to each word
-    # It can be done only on the train set - we are not supposed to know the test set!
-    # This tokenization also lowercases your words, apply some filters, and so on - you can check the doc if you want
-    tokenizer.fit_on_texts(X_train)
-
-    vocab_size = len(tokenizer.word_index)
-
-    # We apply the tokenization to the train and test set
-    X_train_token = tokenizer.texts_to_sequences(X_train)
-    X_test_token = tokenizer.texts_to_sequences(X_test)
-
-    return vocab_size, X_train_token, X_test_token
-
-def pad_data(X_train_token, X_test_token, max_len):
-
-    X_train_pad = sequence.pad_sequences(X_train_token, dtype='float32', padding='pre', maxlen=max_len)
-    X_test_pad = sequence.pad_sequences(X_test_token, dtype='float32', padding='pre', maxlen=max_len)
-
-    return X_train_pad, X_test_pad
 
 def initialize_model(vocab_size, max_len) -> keras.models:
     model = Sequential()
