@@ -6,7 +6,14 @@ from sklearn.model_selection import train_test_split
 from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
 from sklearn.pipeline import make_pipeline, Pipeline
 from sklearn.naive_bayes import MultinomialNB
+from sklearn.feature_extraction.text import CountVectorizer
 from tempfile import mkdtemp
+
+def my_tokenizer(X):
+    newlist = []
+    for alist in X:
+        newlist.append(alist[0].split(' '))
+    return newlist
 
 def boost_naive_base(data=pd.read_csv('Data/clean_data.csv', index_col=0)):
     print(Fore.BLUE + 'Boost Naive Base' + Fore.WHITE)
@@ -20,6 +27,7 @@ def boost_naive_base(data=pd.read_csv('Data/clean_data.csv', index_col=0)):
     cachdir=mkdtemp()
     # Create Pipeline for Naive Bayes
     mnb_pipe = make_pipeline(
+        # CountVectorizer(tokenizer=my_tokenizer),
         TfidfVectorizer(),
         MultinomialNB(),
         memory=cachdir

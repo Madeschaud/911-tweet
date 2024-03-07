@@ -1,3 +1,7 @@
+reinstall_package:
+	@pip uninstall -y tweet_911 || :
+	@pip install -e .
+
 run_preprocess:
 	@python -c 'from Preprocessing.preprocessor import preprocessor_all; preprocessor_all()'
 
@@ -7,19 +11,28 @@ run_main:
 run_vectorizer:
 	@python -c 'from Preprocessing.vectorizer import vectorizer; vectorizer()'
 
-run_baseline:
+#Model ML
+model_ML_baseline:
 	@python -c 'from Model.baseline import baseline_naive; baseline_naive()'
 
-boost_naive_base:
+model_ML_naive_base:
 	@python -c 'from Model.boost_naive_base import boost_naive_base; boost_naive_base()'
-model_lstm:
+
+#Model Deep
+model_deep_lstm:
 	@python -c 'from Model.lstm import model_lstm; model_lstm()'
 
-run_simple_gru:
+model_deep_simple_gru:
 	@python -c 'from Model.simple_gru import GRU_model; GRU_model()'
 
-run_cnn_rnn:
+model_deep_bidirection_lstm:
+	@python -c 'from Model.bidirection_lstm import model_bidirectional_lstm; model_bidirectional_lstm()'
+
+model_deep_cnn_rnn:
 	@python -c 'from Model.cnn_rnn import cnn_rnn; cnn_rnn()'
+
+run_cnn_model:
+	@python -c 'from Model.cnn import model_cnn; model_cnn()'
 
 save_model:
 	@python -c 'from registry import save_model; save_model()'
@@ -32,3 +45,9 @@ save_model:
 
 load_model:
 	@python -c 'from registry import load_model; load_model()'
+
+
+#API
+
+run_api:
+	uvicorn tweet_911.api.fast:app --reload
