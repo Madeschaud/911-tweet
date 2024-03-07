@@ -4,13 +4,13 @@ import pandas as pd
 from colorama import Fore
 
 # tensorflow
-import tensorflow as tf
-from tensorflow import keras
-from tensorflow.keras.datasets import imdb
-from tensorflow.keras.preprocessing import sequence
+#import tensorflow as tf
+#from tensorflow import keras
+# from tensorflow.keras.datasets import imdb
+# from tensorflow.keras.preprocessing import sequence
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Embedding, LSTM, Dense, Bidirectional
-from tensorflow.keras import layers
+from tensorflow.keras.layers import Embedding, LSTM, Dense, Bidirectional, Dropout
+#from tensorflow.keras import layers
 
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from tensorflow.keras.preprocessing.text import Tokenizer
@@ -18,16 +18,13 @@ from keras.callbacks import EarlyStopping, ModelCheckpoint
 
 from sklearn.model_selection import KFold
 
-
-
-
 #sk
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
-from sklearn.model_selection import cross_val_predict
+# from sklearn.model_selection import cross_val_predict
 
 # import data
-data =pd.read_csv('Data/clean_data.csv')
+data =pd.read_csv('/content/clean_data.csv')
 data.head()
 
 def split_data():
@@ -57,24 +54,32 @@ def initialize_model(vocab_size, embedding_dim):
     model.add(Embedding(input_dim=vocab_size+1,output_dim=embedding_dim, mask_zero=True))
 
     #lstm
-    model.add(Bidirectional(LSTM(64, activation='tanh', return_sequences=True)))
-    # model.add(Bidirectional(LSTM(64, activation='tanh')))
-    model.add(Bidirectional(LSTM(32)))
-    model.add(Dense(256, activation='relu'))
-    model.add(Dense(128, activation='relu'))
-    model.add(layers.Dropout(0.2))
+    # model.add(Bidirectional(LSTM(256, activation='tanh', return_sequences=True)))
+    # model.add(Bidirectional(LSTM(128, return_sequences=True)))
+    # model.add(Bidirectional(LSTM(64)))
+    # model.add(Dense(256, activation='relu'))
+    # model.add(Dense(128, activation='relu'))
+    # model.add(layers.Dropout(0.2))
+    # model.add(Dense(64, activation='relu'))
+    # model.add(Dense(1, activation='sigmoid'))
+
+    model.add(Bidirectional(LSTM(256, activation='tanh', return_sequences=True)))
+    model.add(Bidirectional(LSTM(128, return_sequences=True)))
+    model.add(Bidirectional(LSTM(64)))
     model.add(Dense(64, activation='relu'))
+    model.add(Dropout(0.2))
+    model.add(Dense(32, activation='relu'))
     model.add(Dense(1, activation='sigmoid'))
 
     #compile
-    model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy', 'Recall', 'Precision'])
+    model.compile(loss='binary_crossentropy', optimizer='rmsprop', metrics=['accuracy', 'Recall', 'Precision'])
     return model
 
 def model_bidirectional_lstm():
     # set params
     max_features =10000
-    max_len=300
-    embedding_dim=2
+    max_len=20
+    embedding_dim=50
 
     X_train, X_test,y_train, y_test = split_data()
     vocab_size, X_train_token, X_test_token = tokenize_data(X_train, X_test)
@@ -91,11 +96,11 @@ def model_bidirectional_lstm():
 
 
     # Train the model
-    checkpoint_path = 'Data/checkpoint/model-{epoch:02d}-{val_accuracy:.2f}.hdf5'
-    check = ModelCheckpoint(checkpoint_path, monitor='val_acc', verbose=1, save_best_only=True)
+    checkpoint_path = 'modelweights/model_gru.h5'
+    check = ModelCheckpoint(checkpoint_path, monitor='val_precision', verbose=1, save_best_only=True)
     history = model.fit(X_train_pad,
                     y_train, batch_size=32,
-                    epochs=1,
+                    epochs=100,
                     shuffle=True,
                     validation_split = 0.2, #IMPORTANT éviter le data leakage
                     callbacks = [es, check],
@@ -112,7 +117,6 @@ def model_bidirectional_lstm():
 
 
 #  precision    recall  f1-score   support
-
 #            0       0.89      0.86      0.87     25753
 #            1       0.65      0.71      0.68      9540
 

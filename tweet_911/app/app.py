@@ -19,9 +19,9 @@ def load_data(nrows):
     # return data[['tweet_text', 'class_label','disaster_type','disaster_year','country']]
     return data[['tweet_text', 'actionable', 'country']]
 
-data_load_state = st.sidebar.text('Loading data...')
+# data_load_state = st.sidebar.text('Loading data...')
 data = load_data(10000)
-data_load_state.text("Data loaded!")
+# data_load_state.text("Data loaded!")
 
 # if st.checkbox('Show raw data', key='show_data'):
 #     st.subheader('Raw data')
@@ -30,7 +30,7 @@ data_load_state.text("Data loaded!")
 countries_to_highlight = []
 st.sidebar.header("Choose the places you want to go in prio:")
 
-for index, event in data.head(10).iterrows():
+for index, event in data.iterrows():
     tweet_text = event['tweet_text']
     actionable = event['actionable']
 
@@ -46,7 +46,7 @@ for index, event in data.head(10).iterrows():
             # st.markdown('---')
             # st.write(tweet_text)
             # st.markdown('---')
-        st.sidebar.markdown('---')
+        # st.sidebar.markdown('---')
 
 
 
