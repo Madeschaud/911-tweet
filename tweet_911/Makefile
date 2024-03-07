@@ -31,6 +31,9 @@ model_deep_bidirection_lstm:
 model_deep_cnn_rnn:
 	@python -c 'from Model.cnn_rnn import cnn_rnn; cnn_rnn()'
 
+run_cnn_model:
+	@python -c 'from Model.cnn import model_cnn; model_cnn()'
+
 save_model:
 	@python -c 'from registry import save_model; save_model()'
 
