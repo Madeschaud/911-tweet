@@ -7,9 +7,12 @@ import pandas as pd
 import seaborn as sns
 from Model import cnn, bidirection_lstm, simple_gru, cnn_rnn, lstm, baseline, boost_naive_base
 from registry import *
-from Model.utils import split_data, tokenize_data, pad_data
+from Model.utils import split_data, tokenize_data, pad_data, preproc_data
 from keras.callbacks import EarlyStopping, ModelCheckpoint
 from sklearn.metrics import classification_report
+
+from tweet_911.load_model_weights import load_model_weights
+
 
 
 def hist_word_distrib(action, data_cleaned):
@@ -35,7 +38,9 @@ def main():
 
     hist_word_distrib(False, data_cleaned)
     #Turn true or False to activate or disactivate the histplot
-
+        # Create (X_train, y_train, X_test y_test)
+    X_train_pad, X_test_pad, vocab_size = preproc_data()
+    pred(vocab_size)
     # data_cleaned["test_regex"]= data_cleaned["tweet_clean"].str.find('@')
     # print(data_cleaned['test_regex'].value_counts())
 
@@ -109,7 +114,8 @@ def train(
     save_model(model=model, local_model_name={MLFLOW_EXPERIMENT})
 
     # The latest model should be moved to staging
-    mlflow_transition_model('None', 'Staging')
+    if MODEL_TARGET == 'mlflow':
+        mlflow_transition_model('None', 'Staging')
 
     print("✅ train() done \n")
 
@@ -127,6 +133,9 @@ def evaluate(stage: str = "Production") -> float:
     vocab_size, X_train_token, X_test_token = tokenize_data()
     X_train_pad, X_test_pad = pad_data(X_train_token, X_test_token)
 
+    # if MODEL_TARGET == 'local':
+    #     model = load_model_weights()
+    # elif MODEL_TARGET == 'mlflow':
     model = load_model()
     assert model is not None
 
@@ -136,23 +145,27 @@ def evaluate(stage: str = "Production") -> float:
     # print(f'Test accuracy: {accuracy:.4f}')
     y_pred = model.predict(X_test_pad) # Make cross validated predictions of entire dataset
     print(classification_report(y_test,(y_pred > 0.5).astype(int))) # Pass predictions and true values to Classification report
+    return y_pred
 
-def pred(X_pred: pd.DataFrame = None) -> np.ndarray:
+def pred(vocab_size, X_pred: pd.DataFrame = None):
     """
     Make a prediction using the latest trained model
     """
 
-    # Check if X_pred exists
-    if X_pred is None:
-        # DECIDE IF WE PRINT
+    if MLFLOW_EXPERIMENT=='local':
+        return load_model_weights(vocab_size)
+    else:
+        # Check if X_pred exists
+        if X_pred is None:
+            # DECIDE IF WE PRINT
+            pass
+
+        model = load_model()
+        assert model is not None
+
+        # Process X_pred
+        # Predict y
         pass
-
-    model = load_model()
-    assert model is not None
-
-    # Process X_pred
-    # Predict y
-    pass
 
 if __name__ == '__main__':
     train()

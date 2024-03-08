@@ -99,3 +99,14 @@ def pad_data(X_train_token, X_test_token, max_len=20):
     X_test_pad = pad_sequences(X_test_token, dtype='float32', padding='post', maxlen=max_len)
 
     return X_train_pad, X_test_pad
+
+def preproc_data(tweet=None):
+    if not tweet:
+        X_train, X_test, y_train, y_test = split_data()
+        vocab_size, X_train_token, X_test_token = tokenize_data(X_train, X_test)
+        X_train_pad, X_test_pad = pad_data(X_train_token, X_test_token)
+        return X_train_pad, X_test_pad, vocab_size
+    else:
+        vocab_size, X_train_token, X_tweet_token = tokenize_data(X_train, tweet)
+        X_train_pad, X_tweet_pad = pad_data(X_train_token, X_tweet_token)
+        return X_tweet_pad

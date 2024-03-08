@@ -14,7 +14,7 @@ from tweet_911.Model.utils import split_data, tokenize_data, pad_data
 
 def initialize_model(vocab_size, embedding_dim=50):
     model = Sequential()
-    model.add(Embedding(input_dim=vocab_size+1, output_dim=embedding_dim, mask_zero=True))
+    model.add(Embedding(input_dim=vocab_size+1, output_dim=100, mask_zero=True))
     model.add(GRU(units=256, activation='tanh',return_sequences=True))
     model.add(GRU(units=128, activation='tanh',return_sequences=True))
     model.add(GRU(units=64, activation='tanh',return_sequences=True))
@@ -23,6 +23,7 @@ def initialize_model(vocab_size, embedding_dim=50):
     model.add(Dropout(rate=0.2))
     model.add(Dense(256, activation='relu'))
     model.add(Dropout(rate=0.2))
+    model.add(Dense(1, activation='sigmoid'))
 
     model.compile(
             loss='binary_crossentropy',
@@ -35,10 +36,9 @@ def initialize_model(vocab_size, embedding_dim=50):
 
 def GRU_model():
     print(Fore.YELLOW + '🦾 GRU model loading' + Fore.YELLOW)
-    vocab_size, X_train_token, X_test_token = tokenize_data()
-
-    X_train_pad, X_test_pad = pad_data(X_train_token, X_test_token)
     X_train, X_test, y_train, y_test = split_data()
+    vocab_size, X_train_token, X_test_token = tokenize_data(X_train, X_test)
+    X_train_pad, X_test_pad = pad_data(X_train_token, X_test_token)
 
     model = initialize_model(vocab_size)
     es = EarlyStopping(patience=10, restore_best_weights=True)

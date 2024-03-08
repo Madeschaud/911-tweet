@@ -2,6 +2,8 @@ import pandas as pd
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from tweet_911.load_model_weights import load_model_weights
+from tweet_911.Model.utils import preproc_data
+from tweet_911.main import pred
 
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
@@ -25,19 +27,20 @@ app.add_middleware(
 # The trick is to load the model in memory when the Uvicorn server starts
 # and then store the model in an `app.state.model` global variable, accessible across all routes!
 # This will prove very useful for the Demo Day
-app.state.model = load_model_weights()
+X_train_pad, X_test_pad, vocab_size = preproc_data()
+app.state.model = pred(vocab_size)
 
 
-def padding_tweet(tweet):
-    tokenizer = Tokenizer()
-    tokenizer.fit_on_texts([tweet])
-    sequences = tokenizer.texts_to_sequences([tweet])
-    tweet_padded = pad_sequences(sequences)
-    return tweet_padded
+# def padding_tweet(tweet):
+#     tokenizer = Tokenizer()
+#     tokenizer.fit_on_texts([tweet])
+#     sequences = tokenizer.texts_to_sequences([tweet])
+#     tweet_padded = pad_sequences(sequences)
+#     return tweet_padded
 
 # http://127.0.0.1:8000/predict?tweet="HELLOOOO"
 @app.get("/predict")
-def predict(
+def api_predict(
         tweet: str,  # Tweet we want to predict
     ):
     """
@@ -46,9 +49,9 @@ def predict(
     model = app.state.model
     assert model is not None
 
+    X_tweet_pad = preproc_data(tweet)
 
-
-    y_pred = model.predict(padding_tweet(tweet))
+    y_pred = model.predict(X_tweet_pad)
 
     # # ⚠️ fastapi only accepts simple Python data types as a return value
     # # among them dict, list, str, int, float, bool
