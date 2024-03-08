@@ -1,6 +1,5 @@
 from colorama import Fore, Style
 from tensorflow import keras
-from google.cloud import storage
 import os
 import mlflow
 import time
@@ -21,13 +20,13 @@ def save_results(params: dict, metrics: dict) -> None:
 
         print("✅ Results saved on mlflow")
 
-def save_model(model: keras.Model, local_model_name:{'mnb', 'lstm', 'gru'}) -> None:
+def save_model(model: keras.Model, local_model_name) -> None:
 
     timestamp = time.strftime("%Y%m%d-%H%M%S")
     # Save model locally
     model_path = os.path.join(LOCAL_REGISTRY_PATH, "models", f"{local_model_name}", f"{timestamp}.h5")
     model.save(model_path)
-    print(f"✅ Model saved locally under name: {local_model_name}/{timestamp}.h5")
+    print(f"✅ Model saved locally under name: {MLFLOW_MODEL_NAME}/{MLFLOW_EXPERIMENT}/{timestamp}.h5")
 
     if MODEL_TARGET == "mlflow":
         mlflow.tensorflow.log_model(
@@ -70,9 +69,8 @@ def load_model(stage="Production") -> keras.Model:
         return latest_model
 
 
-
     elif MODEL_TARGET == "mlflow":
-        print(Fore.BLUE + f"\nLoad [{stage}] model from MLflow..." + Style.RESET_ALL)
+        print(Fore.BLUE + f"\nLoading model in {stage} from MLflow..." + Style.RESET_ALL)
 
         # Load model from MLflow
         model = None
@@ -83,11 +81,11 @@ def load_model(stage="Production") -> keras.Model:
             model_uri= model_version[0].source
             assert model_uri is not None
         except:
-            print("No model named {MLFLOW_MODEL_NAME} found in stage {stage}")
+            print(f"No model named {MLFLOW_MODEL_NAME} found in stage {stage}")
             return None
-
         model = mlflow.tensorflow.load_model(model_uri=model_uri)
         return model
+
     else:
         return None
 

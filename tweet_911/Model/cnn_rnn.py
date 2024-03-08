@@ -14,13 +14,13 @@ from keras.preprocessing.sequence import pad_sequences
 from keras.preprocessing.text import Tokenizer
 from keras.callbacks import EarlyStopping
 
-from utils import split_data, tokenize_data, pad_data
+from Model.utils import split_data, tokenize_data, pad_data
 
-def initialize_model(vocab_size):
+def initialize_model(vocab_size, embedding_dim=50):
 
     model = Sequential()
 
-    model.add(layers.Embedding(input_dim=vocab_size+1, output_dim=2))
+    model.add(layers.Embedding(input_dim=vocab_size+1, output_dim=embedding_dim, mask_zero=True))
 
     model.add(layers.Conv1D(20, kernel_size=3, activation='relu'))
     model.add(layers.GlobalMaxPool1D())

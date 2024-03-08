@@ -46,6 +46,8 @@ save_model:
 load_model:
 	@python -c 'from registry import load_model; load_model()'
 
+train_model:
+	@python -c 'from main import train; train()'
 
 #API
 

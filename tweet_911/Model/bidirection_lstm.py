@@ -6,51 +6,24 @@ from colorama import Fore
 # tensorflow
 import tensorflow as tf
 from tensorflow import keras
-from tensorflow.keras.datasets import imdb
-from tensorflow.keras.preprocessing import sequence
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Embedding, LSTM, Dense, Bidirectional
-from tensorflow.keras import layers
+from keras.datasets import imdb
+from keras.preprocessing import sequence
+from keras.models import Sequential
+from keras.layers import Embedding, LSTM, Dense, Bidirectional
+from keras import layers
 
-from tensorflow.keras.preprocessing.sequence import pad_sequences
-from tensorflow.keras.preprocessing.text import Tokenizer
+from keras.preprocessing.sequence import pad_sequences
+from keras.preprocessing.text import Tokenizer
 from keras.callbacks import EarlyStopping, ModelCheckpoint
-
-from sklearn.model_selection import KFold
-
-
-
 
 #sk
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
-from sklearn.model_selection import cross_val_predict
 
-# import data
-data =pd.read_csv('Data/clean_data.csv')
-data.head()
-
-def split_data():
-    #identify X,y
-    X = data['tweet_clean']
-    y = data.actionable
-
-    #split data
-    return train_test_split( X, y, test_size=0.30, random_state=42)
+from Model.utils import split_data, tokenize_data, pad_data
 
 
-def tokenize_data(X_train, X_test):
-    # tokenize
-    tk =Tokenizer()
-    tk.fit_on_texts(X_train)
-
-    vocab_size = len(tk.word_index)
-    print(f'There are {vocab_size} different words in your corpus')
-
-    return vocab_size, tk.texts_to_sequences(X_train), tk.texts_to_sequences(X_test)
-
-
-def initialize_model(vocab_size, embedding_dim):
+def initialize_model(vocab_size, embedding_dim=50):
     # build model
     model = Sequential()
     #embedding
@@ -78,10 +51,7 @@ def model_bidirectional_lstm():
 
     X_train, X_test,y_train, y_test = split_data()
     vocab_size, X_train_token, X_test_token = tokenize_data(X_train, X_test)
-
-    # Pad the inputs
-    X_train_pad = pad_sequences(X_train_token, dtype='float32', padding='post',maxlen=max_len)
-    X_test_pad = pad_sequences(X_test_token, dtype='float32', padding='post',maxlen=max_len)
+    X_train_pad, X_test_pad = pad_data(X_train_token, X_test_token, max_len)
 
     model = initialize_model(vocab_size, embedding_dim)
 
