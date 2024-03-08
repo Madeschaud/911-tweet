@@ -1,8 +1,14 @@
 import pandas as pd
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from Model.bidirection_lstm import model_bidirectional_lstm, split_data, tokenize_data
+
+from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
+
+from tweet_911.registry import load_model
+
+import pickle
+import os
 
 app = FastAPI()
 
@@ -21,21 +27,38 @@ app.add_middleware(
 # The trick is to load the model in memory when the Uvicorn server starts
 # and then store the model in an `app.state.model` global variable, accessible across all routes!
 # This will prove very useful for the Demo Day
-app.state.model = model_bidirectional_lstm()
+app.state.model = load_model('Staging')
 
-# http://127.0.0.1:8000/predict?pickup_datetime=2012-10-06 12:10:20&pickup_longitude=40.7614327&pickup_latitude=-73.9798156&dropoff_longitude=40.6513111&dropoff_latitude=-73.8803331&passenger_count=2
+# def padding_tweet(tweet):
+#     tokenizer = Tokenizer()
+#     tokenizer.fit_on_texts([tweet])
+#     sequences = tokenizer.texts_to_sequences([tweet])
+#     tweet_padded = pad_sequences(sequences)
+#     return tweet_padded
+
+# http://127.0.0.1:8000/predict?tweet="HELLOOOO"
 @app.get("/predict")
-def predict(
+def api_predict(
         tweet: str,  # Tweet we want to predict
     ):
     """
     Make a tweet prediction.
     """
+
     model = app.state.model
     assert model is not None
+    # loading
+    print(os.getcwd())
+    with open('tweet_911/Data/tokenizer.pickle', 'rb') as handle:
+        tokenizer = pickle.load(handle)
+    X_tweet_token = tokenizer.texts_to_sequences([tweet])
+    print(X_tweet_token)
+    print('tweet = ',tweet)
+    X_tweet_pad = pad_sequences(X_tweet_token, dtype='float32', padding='post', maxlen=20)
+    print(X_tweet_pad)
 
-    y_pred = model.predict(tweet)
-
+    y_pred = model.predict(X_tweet_pad)
+    # print(y_pred)
     # # ⚠️ fastapi only accepts simple Python data types as a return value
     # # among them dict, list, str, int, float, bool
     # # in order to be able to convert the api response to JSON

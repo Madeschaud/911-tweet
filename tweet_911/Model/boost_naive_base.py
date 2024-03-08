@@ -15,7 +15,7 @@ def my_tokenizer(X):
         newlist.append(alist[0].split(' '))
     return newlist
 
-def boost_naive_base(data=pd.read_csv('Data/clean_data.csv', index_col=0)):
+def boost_naive_base(data=pd.read_csv('tweet_911/Data/clean_data.csv', index_col=0)):
     print(Fore.BLUE + 'Boost Naive Base' + Fore.WHITE)
 
     X = data[['tweet_clean']]

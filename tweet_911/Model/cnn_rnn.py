@@ -1,36 +1,30 @@
-from colorama import Fore
-import pandas as pd
 import numpy as np
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.model_selection import train_test_split
-from sklearn.pipeline import make_pipeline, Pipeline
-from tempfile import mkdtemp
+import pandas as pd
+from colorama import Fore
+
+from sklearn.metrics import classification_report
 
 from tensorflow import keras
-from keras import layers
-from keras import models
-from keras import Sequential
-from keras.preprocessing.sequence import pad_sequences
-from keras.preprocessing.text import Tokenizer
+from keras.models import Sequential
+from keras.layers import Embedding, Dense, MaxPool1D, Conv1D, GlobalMaxPool1D, RNN
 from keras.callbacks import EarlyStopping
-
-from Model.utils import split_data, tokenize_data, pad_data
+from tweet_911.Model.utils import split_data, tokenize_data, pad_data
 
 def initialize_model(vocab_size, embedding_dim=50):
 
     model = Sequential()
 
-    model.add(layers.Embedding(input_dim=vocab_size+1, output_dim=embedding_dim, mask_zero=True))
+    model.add(Embedding(input_dim=vocab_size+1, output_dim=embedding_dim, mask_zero=True))
 
-    model.add(layers.Conv1D(20, kernel_size=3, activation='relu'))
-    model.add(layers.GlobalMaxPool1D())
+    model.add(Conv1D(20, kernel_size=3, activation='relu'))
+    model.add(GlobalMaxPool1D())
 
-    model.add(layers.RNN(units=10, activation='tanh'))
+    model.add(RNN(units=10, activation='tanh'))
 
-    model.add(layers.Dense(10, activation='relu'))
-    model.add(layers.Dense(5, activation='relu'))
+    model.add(Dense(10, activation='relu'))
+    model.add(Dense(5, activation='relu'))
 
-    model.add(layers.Dense(1, activation='sigmoid'))
+    model.add(Dense(1, activation='sigmoid'))
 
 
     model.compile(

@@ -1,50 +1,44 @@
-from colorama import Fore
-import pandas as pd
 import numpy as np
+import pandas as pd
+from colorama import Fore
 import os
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.model_selection import train_test_split, cross_val_predict
-from sklearn.pipeline import make_pipeline, Pipeline
+
 from sklearn.metrics import classification_report
-from tempfile import mkdtemp
 
-from keras.metrics import Recall
-from keras import layers
-from keras import models
-from keras import Sequential
-from keras.preprocessing.sequence import pad_sequences
-from keras.preprocessing.text import Tokenizer
+from tensorflow import keras
+from keras.models import Sequential
+from keras.layers import Embedding, Dense, MaxPool1D, GRU, Dropout
 from keras.callbacks import EarlyStopping, ModelCheckpoint
-
-from Model.utils import split_data, tokenize_data, pad_data
+from tweet_911.Model.utils import split_data, tokenize_data, pad_data
 
 
 def initialize_model(vocab_size, embedding_dim=50):
-
     model = Sequential()
-    model.add(layers.Embedding(input_dim=vocab_size+1, output_dim=embedding_dim, mask_zero=True))
-    model.add(layers.GRU(units=64, activation='tanh', return_sequences=True))
-    model.add(layers.GRU(units=32, activation='tanh', return_sequences=True))
-    model.add(layers.GRU(units=16, activation='tanh'))
-    model.add(layers.Dense(1, activation='sigmoid'))
-
+    model.add(Embedding(input_dim=vocab_size+1, output_dim=100, mask_zero=True))
+    model.add(GRU(units=256, activation='tanh',return_sequences=True))
+    model.add(GRU(units=128, activation='tanh',return_sequences=True))
+    model.add(GRU(units=64, activation='tanh',return_sequences=True))
+    model.add(GRU(units=32, activation='tanh'))
+    model.add(Dense(1024, activation='relu'))
+    model.add(Dropout(rate=0.2))
+    model.add(Dense(256, activation='relu'))
+    model.add(Dropout(rate=0.2))
+    model.add(Dense(1, activation='sigmoid'))
 
     model.compile(
             loss='binary_crossentropy',
             optimizer='adam',
-            metrics=['accuracy', Recall()]
+            metrics=['accuracy', 'Recall', 'Precision']
     )
 
     return model
 
 
 def GRU_model():
-    print(Fore.YELLOW + 'Le GRU est lancé' + Fore.YELLOW)
-
-    vocab_size, X_train_token, X_test_token = tokenize_data()
-
-    X_train_pad, X_test_pad = pad_data(X_train_token, X_test_token)
+    print(Fore.YELLOW + '🦾 GRU model loading' + Fore.YELLOW)
     X_train, X_test, y_train, y_test = split_data()
+    vocab_size, X_train_token, X_test_token = tokenize_data(X_train, X_test)
+    X_train_pad, X_test_pad = pad_data(X_train_token, X_test_token)
 
     model = initialize_model(vocab_size)
     es = EarlyStopping(patience=10, restore_best_weights=True)

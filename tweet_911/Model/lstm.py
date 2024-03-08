@@ -11,17 +11,17 @@ from keras.models import Sequential
 from keras.layers import Embedding, LSTM, Dense
 from keras import layers
 
-from keras.preprocessing.sequence import pad_sequences
+from tensorflow.keras.preprocessing.sequence import pad_sequences
 from keras.callbacks import ModelCheckpoint, EarlyStopping
 
-from Model.utils import split_data, tokenize_data, pad_data
+from tweet_911.Model.utils import split_data, tokenize_data, pad_data
 
 #sk
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
 
 # import data
-data =pd.read_csv('Data/clean_data.csv')
+data =pd.read_csv('tweet_911/Data/clean_data.csv')
 data.head()
 
 

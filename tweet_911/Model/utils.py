@@ -1,25 +1,25 @@
-from sklearn.model_selection import KFold
+# from sklearn.model_selection import KFold
 import numpy as np
 
-from tensorflow import keras
-from keras.callbacks import EarlyStopping, ModelCheckpoint
+# from tensorflow import keras
+# from keras.callbacks import EarlyStopping, ModelCheckpoint
 
 import numpy as np
 import pandas as pd
 from colorama import Fore
-from sklearn.preprocessing import StandardScaler, MinMaxScaler, RobustScaler
+# from sklearn.preprocessing import StandardScaler, MinMaxScaler, RobustScaler
 from sklearn.model_selection import cross_val_score, train_test_split
-from sklearn.linear_model import LinearRegression, LogisticRegression
-from sklearn.metrics import classification_report
+# from sklearn.linear_model import LinearRegression, LogisticRegression
+# from sklearn.metrics import classification_report
 
-from tensorflow import keras
-from keras.models import Sequential
-from keras.layers import Embedding, Dense, MaxPool1D, Conv1D, Flatten, Dropout
-from keras.callbacks import EarlyStopping, ModelCheckpoint
-from keras.optimizers import Adam, RMSprop
-from keras.preprocessing import sequence
+# from tensorflow import keras
+# from keras.models import Sequential
+# from keras.layers import Embedding, Dense, MaxPool1D, Conv1D, Flatten, Dropout
+# from keras.callbacks import EarlyStopping, ModelCheckpoint
+# from keras.optimizers import Adam, RMSprop
+from tensorflow.keras.preprocessing.sequence import pad_sequences
 from keras.preprocessing.text import Tokenizer
-from keras.metrics import Accuracy, Recall, Precision
+# from keras.metrics import Accuracy, Recall, Precision
 
 # Tentative: Manual cross_val for LSTM model
 """def cross_val_hand(vocab_size, X_pad, y, embedding_dim):
@@ -69,7 +69,7 @@ from keras.metrics import Accuracy, Recall, Precision
 # -------- Common functions prior to training model
 
 def split_data() -> tuple:
-    data=pd.read_csv('Data/clean_data.csv', index_col=0)
+    data=pd.read_csv('tweet_911/Data/clean_data.csv', index_col=0)
     X = data['tweet_text']
     y = data.actionable
 
@@ -91,11 +91,11 @@ def tokenize_data(X_train, X_test):
     X_train_token = tokenizer.texts_to_sequences(X_train)
     X_test_token = tokenizer.texts_to_sequences(X_test)
 
-    return vocab_size, X_train_token, X_test_token
+    return vocab_size, X_train_token, X_test_token, tokenizer
 
-def pad_data(X_train_token, X_test_token, max_len=300):
+def pad_data(X_train_token, X_test_token, max_len=20):
 
-    X_train_pad = sequence.pad_sequences(X_train_token, dtype='float32', padding='pre', maxlen=max_len)
-    X_test_pad = sequence.pad_sequences(X_test_token, dtype='float32', padding='pre', maxlen=max_len)
+    X_train_pad = pad_sequences(X_train_token, dtype='float32', padding='post', maxlen=max_len)
+    X_test_pad = pad_sequences(X_test_token, dtype='float32', padding='post', maxlen=max_len)
 
     return X_train_pad, X_test_pad
