@@ -1,5 +1,5 @@
 from colorama import Fore
-from Preprocessing.cleaning import sentence_cleaning
+from tweet_911.Preprocessing.cleaning import sentence_cleaning
 import os
 import pandas
 

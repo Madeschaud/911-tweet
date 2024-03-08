@@ -11,7 +11,7 @@ from keras.callbacks import EarlyStopping, ModelCheckpoint
 from tweet_911.Model.utils import split_data, tokenize_data, pad_data
 
 def initialize_model(vocab_size, embedding_dim=50) -> keras.models:
-    max_length = 300
+    max_length = 20
 
     model = Sequential()
     model.add(Embedding(input_dim=vocab_size+1, output_dim=embedding_dim, mask_zero=True, input_length=max_length))

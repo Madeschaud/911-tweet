@@ -1,4 +1,4 @@
-from Preprocessing.sub_cleaning import Fore, remove_nb, remove_punctuation, remove_space_lowercase, remove_stop_words, lemmatize, remove_rt, remove_at, remove_hashtags
+from tweet_911.Preprocessing.sub_cleaning import Fore, remove_nb, remove_punctuation, remove_space_lowercase, remove_stop_words, lemmatize, remove_rt, remove_at, remove_hashtags
 from nltk import word_tokenize
 def sentence_cleaning(sentence):
     '''Cleaning function ! Put True or False to enable or disable some part of the cleaning'''

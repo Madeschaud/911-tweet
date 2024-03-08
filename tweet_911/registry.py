@@ -47,6 +47,7 @@ def load_model(stage="Production") -> keras.Model:
     Return None (but do not Raise) if no model is found
 
     """
+    print(MODEL_TARGET)
 
     if MODEL_TARGET == "local":
         print(Fore.BLUE + f"\nLoad latest model from local registry..." + Style.RESET_ALL)
@@ -84,6 +85,7 @@ def load_model(stage="Production") -> keras.Model:
             print(f"No model named {MLFLOW_MODEL_NAME} found in stage {stage}")
             return None
         model = mlflow.tensorflow.load_model(model_uri=model_uri)
+        # print()
         return model
 
     else:
