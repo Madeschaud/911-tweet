@@ -84,6 +84,7 @@ def load_model(stage="Production") -> keras.Model:
             print(f"No model named {MLFLOW_MODEL_NAME} found in stage {stage}")
             return None
         model = mlflow.tensorflow.load_model(model_uri=model_uri)
+        print(Fore.MAGENTA + f"\nModel loaded from MLflow!" + Style.RESET_ALL)
         return model
 
     else:
@@ -141,3 +142,7 @@ def mlflow_run(func):
 
         return results
     return wrapper
+
+
+if __name__=='__main__':
+    load_model()
