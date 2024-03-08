@@ -23,12 +23,12 @@ def hist_word_distrib(action, data_cleaned):
 
 def main():
     print(Fore.RED + 'Main' + Fore.WHITE)
-    if not os.path.isfile('Data/clean_data.csv'):
+    if not os.path.isfile('tweet_911/Data/clean_data.csv'):
         preprocessor_all()
-    data_cleaned = pandas.read_csv('Data/clean_data.csv', index_col=0)
+    data_cleaned = pandas.read_csv('tweet_911/Data/clean_data.csv', index_col=0)
 
-    #Turn true or False to activate or disactivate the histplot
     hist_word_distrib(False, data_cleaned)
+    #Turn true or False to activate or disactivate the histplot
 
     # data_cleaned["test_regex"]= data_cleaned["tweet_clean"].str.find('@')
     # print(data_cleaned['test_regex'].value_counts())

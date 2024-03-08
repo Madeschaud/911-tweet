@@ -17,7 +17,7 @@ from keras.callbacks import EarlyStopping
 
 
 
-def split_data(data=pd.read_csv('Data/clean_data.csv', index_col=0)):
+def split_data(data=pd.read_csv('tweet_911/Data/clean_data.csv', index_col=0)):
     X = data['tweet_text']
     y = data.actionable
 

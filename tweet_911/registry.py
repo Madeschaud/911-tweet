@@ -6,7 +6,7 @@ import mlflow
 import time
 import glob
 from mlflow.tracking import MlflowClient
-from params import *
+from tweet_911.params import *
 
 def save_results(params: dict, metrics: dict) -> None:
     """

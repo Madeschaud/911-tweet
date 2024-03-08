@@ -29,10 +29,10 @@ import matplotlib.pyplot as plt
 
 
 #save result
-from registry import save_model, save_results
+from tweet_911.registry import save_model, save_results
 
 # import data
-data =pd.read_csv('Data/clean_data.csv')
+data =pd.read_csv('tweet_911/Data/clean_data.csv')
 data.head()
 
 def split_data():

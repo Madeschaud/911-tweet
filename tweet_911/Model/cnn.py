@@ -15,7 +15,7 @@ from keras.preprocessing import sequence
 from keras.preprocessing.text import Tokenizer
 from keras.metrics import Accuracy, Recall, Precision
 
-def split_data(data=pd.read_csv('Data/clean_data.csv', index_col=0)) -> tuple:
+def split_data(data=pd.read_csv('tweet_911/Data/clean_data.csv', index_col=0)) -> tuple:
     X = data['tweet_text']
     y = data.actionable
 

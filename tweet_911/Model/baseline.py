@@ -10,7 +10,7 @@ from sklearn.metrics import recall_score
 def baseline_naive():
     print(Fore.BLUE + 'Baseline Naive' + Fore.WHITE)
 
-    data=pd.read_csv('Data/clean_data.csv', index_col=0)
+    data=pd.read_csv('tweet_911/Data/clean_data.csv', index_col=0)
 
     # Feature/Target
     X = data['tweet_clean']

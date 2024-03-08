@@ -20,72 +20,92 @@ from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
 
 
 
-def split_data(data=pd.read_csv('Data/clean_data.csv', index_col=0)):
-    X = data['tweet_text']
+def split_data():
+    #identify X,y
+    X = data['tweet_clean']
     y = data.actionable
 
-    # Split into Train/Test
-    return train_test_split(X, y, test_size=0.3)
+    #split data
+    return train_test_split( X, y, test_size=0.30, random_state=42)
 
-def tokenize_data():
-    X_train, X_test, y_train, y_test = split_data()
-    # This initializes a Keras utilities that does all the tokenization for you
-    tokenizer = Tokenizer()
 
-    # The tokenization learns a dictionary that maps a token (integer) to each word
-    # It can be done only on the train set - we are not supposed to know the test set!
-    # This tokenization also lowercases your words, apply some filters, and so on - you can check the doc if you want
-    tokenizer.fit_on_texts(X_train)
+def tokenize_data(X_train, X_test):
+    # tokenize
+    tk =Tokenizer()
+    tk.fit_on_texts(X_train)
 
-    vocab_size = len(tokenizer.word_index)
+    vocab_size = len(tk.word_index)
+    print(f'There are {vocab_size} different words in your corpus')
 
-    # We apply the tokenization to the train and test set
-    X_train_token = tokenizer.texts_to_sequences(X_train)
-    X_test_token = tokenizer.texts_to_sequences(X_test)
-
-    return vocab_size, X_train_token, X_test_token
+    return vocab_size, tk.texts_to_sequences(X_train), tk.texts_to_sequences(X_test)
 
 def pad_data(X_train_token, X_test_token):
 
-    X_train_pad = pad_sequences(X_train_token, dtype='float32', padding='pre')
-    X_test_pad = pad_sequences(X_test_token, dtype='float32', padding='pre')
+    X_train_pad = pad_sequences(X_train_token, dtype='float32', padding='post', maxlen = 20)
+    X_test_pad = pad_sequences(X_test_token, dtype='float32', padding='post', maxlen = 20)
 
     return X_train_pad, X_test_pad
 
-def initialize_model(vocab_size):
+def initialize_model():
+
+    vocab_size, X_train_token, X_test_token = tokenize_data()
 
     model = Sequential()
 
-    model.add(layers.Embedding(input_dim=vocab_size+1, output_dim=2, mask_zero=True))
+    model.add(layers.Embedding(input_dim=vocab_size+1, output_dim=100, mask_zero=True))
 
-    model.add(layers.GRU(units=64, activation='tanh', return_sequences=True))
-    model.add(layers.GRU(units=32, activation='tanh', return_sequences=True))
 
-    model.add(layers.GRU(units=16, activation='tanh'))
 
+    model.add(layers.GRU(units=256, activation='tanh',return_sequences=True))
+
+    model.add(layers.GRU(units=128, activation='tanh',return_sequences=True))
+
+    model.add(layers.GRU(units=64, activation='tanh',return_sequences=True))
+
+    model.add(layers.GRU(units=32, activation='tanh'))
+
+
+    model.add(layers.Dense(1024, activation='relu'))
+    model.add(layers.Dropout(rate=0.2))
+    model.add(layers.Dense(256, activation='relu'))
+    model.add(layers.Dropout(rate=0.2))
 
     model.add(layers.Dense(1, activation='sigmoid'))
+
+
 
 
     model.compile(
             loss='binary_crossentropy',
             optimizer='adam',
-            metrics=['accuracy', Recall()]
+            metrics=['accuracy', 'Recall', 'Precision']
     )
 
     return model
 
 
 def GRU_model():
-    print(Fore.YELLOW + 'Le GRU est lancé' + Fore.YELLOW)
+    print(Fore.YELLOW + '🦾 GRU model loading' + Fore.YELLOW)
 
-    vocab_size, X_train_token, X_test_token = tokenize_data()
+    # set params
+    max_features =10000
+    max_len=20
+    embedding_dim=50
+    batch_size = 32
+    patience=20
+    validation_split=0.2
+    epochs=1
 
-    X_train_pad, X_test_pad = pad_data(X_train_token, X_test_token)
-    X_train, X_test, y_train, y_test = split_data()
+    X_train, X_test,y_train, y_test = split_data()
+    vocab_size, X_train_token, X_test_token = tokenize_data(X_train, X_test)
 
-    model = initialize_model(vocab_size)
-    es = EarlyStopping(patience=10, restore_best_weights=True)
+    # Pad the inputs
+    X_train_pad = pad_sequences(X_train_token, dtype='float32', padding='post',maxlen=max_len)
+    X_test_pad = pad_sequences(X_test_token, dtype='float32', padding='post',maxlen=max_len)
+
+
+    model = initialize_model()
+    es = EarlyStopping(patience=patience, restore_best_weights=True)
 
     checkpoint_path = "modelweights/model_gru.h5"
     checkpoint_dir = os.path.dirname(checkpoint_path)
