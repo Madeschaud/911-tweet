@@ -20,19 +20,19 @@ model_ML_naive_base:
 
 #Model Deep
 model_deep_lstm:
-	@python -c 'from Model.lstm import model_lstm; model_lstm()'
+	@python -c 'from tweet_911.Model.lstm import model_lstm; model_lstm()'
 
 model_deep_simple_gru:
-	@python -c 'from Model.simple_gru import GRU_model; GRU_model()'
+	@python -c 'from tweet_911.Model.simple_gru import GRU_model; GRU_model()'
 
 model_deep_bidirection_lstm:
-	@python -c 'from Model.bidirection_lstm import model_bidirectional_lstm; model_bidirectional_lstm()'
+	@python -c 'from tweet_911.Model.bidirection_lstm import model_bidirectional_lstm; model_bidirectional_lstm()'
 
 model_deep_cnn_rnn:
-	@python -c 'from Model.cnn_rnn import cnn_rnn; cnn_rnn()'
+	@python -c 'from tweet_911.Model.cnn_rnn import cnn_rnn; cnn_rnn()'
 
 run_cnn_model:
-	@python -c 'from Model.cnn import model_cnn; model_cnn()'
+	@python -c 'from tweet_911.Model.cnn import model_cnn; model_cnn()'
 
 save_model:
 	@python -c 'from registry import save_model; save_model()'
@@ -46,6 +46,8 @@ save_model:
 load_model:
 	@python -c 'from registry import load_model; load_model()'
 
+train_model:
+	@python -c 'from main import train; train()'
 
 reset_local_files:
 	rm -rf ${ML_DIR}

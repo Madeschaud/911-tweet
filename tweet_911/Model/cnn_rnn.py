@@ -1,69 +1,32 @@
-from colorama import Fore
-import pandas as pd
 import numpy as np
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.model_selection import train_test_split
-from sklearn.pipeline import make_pipeline, Pipeline
-from tempfile import mkdtemp
+import pandas as pd
+from colorama import Fore
+
+from sklearn.metrics import classification_report
 
 from tensorflow import keras
-from keras import layers
-from keras import models
-from keras import Sequential
-from keras.preprocessing.sequence import pad_sequences
-from keras.preprocessing.text import Tokenizer
+from keras.models import Sequential
+from keras.layers import Embedding, Dense, MaxPool1D, Conv1D, GlobalMaxPool1D, RNN
 from keras.callbacks import EarlyStopping
+from tweet_911.Model.utils import split_data, tokenize_data, pad_data
 
+from Model.utils import split_data, tokenize_data, pad_data
 
-
-
-def split_data(data=pd.read_csv('tweet_911/Data/clean_data.csv', index_col=0)):
-    X = data['tweet_text']
-    y = data.actionable
-
-    # Split into Train/Test
-    return train_test_split(X, y, test_size=0.3)
-
-def tokenize_data():
-    X_train, X_test, y_train, y_test = split_data()
-    # This initializes a Keras utilities that does all the tokenization for you
-    tokenizer = Tokenizer()
-
-    # The tokenization learns a dictionary that maps a token (integer) to each word
-    # It can be done only on the train set - we are not supposed to know the test set!
-    # This tokenization also lowercases your words, apply some filters, and so on - you can check the doc if you want
-    tokenizer.fit_on_texts(X_train)
-
-    vocab_size = len(tokenizer.word_index)
-
-    # We apply the tokenization to the train and test set
-    X_train_token = tokenizer.texts_to_sequences(X_train)
-    X_test_token = tokenizer.texts_to_sequences(X_test)
-
-    return vocab_size, X_train_token, X_test_token
-
-def pad_data(X_train_token, X_test_token):
-
-    X_train_pad = pad_sequences(X_train_token, dtype='float32', padding='pre')
-    X_test_pad = pad_sequences(X_test_token, dtype='float32', padding='pre')
-
-    return X_train_pad, X_test_pad
-
-def initialize_model(vocab_size):
+def initialize_model(vocab_size, embedding_dim=50):
 
     model = Sequential()
 
-    model.add(layers.Embedding(input_dim=vocab_size+1, output_dim=2))
+    model.add(Embedding(input_dim=vocab_size+1, output_dim=embedding_dim, mask_zero=True))
 
-    model.add(layers.Conv1D(20, kernel_size=3, activation='relu'))
-    model.add(layers.GlobalMaxPool1D())
+    model.add(Conv1D(20, kernel_size=3, activation='relu'))
+    model.add(GlobalMaxPool1D())
 
-    model.add(layers.RNN(units=10, activation='tanh'))
+    model.add(RNN(units=10, activation='tanh'))
 
-    model.add(layers.Dense(10, activation='relu'))
-    model.add(layers.Dense(5, activation='relu'))
+    model.add(Dense(10, activation='relu'))
+    model.add(Dense(5, activation='relu'))
 
-    model.add(layers.Dense(1, activation='sigmoid'))
+    model.add(Dense(1, activation='sigmoid'))
 
 
     model.compile(

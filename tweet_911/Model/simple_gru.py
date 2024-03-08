@@ -1,79 +1,28 @@
-from colorama import Fore
-import pandas as pd
 import numpy as np
+import pandas as pd
+from colorama import Fore
 import os
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.model_selection import train_test_split, cross_val_predict
-from sklearn.pipeline import make_pipeline, Pipeline
+
 from sklearn.metrics import classification_report
-from tempfile import mkdtemp
 
-from tensorflow.keras.metrics import Recall
-from tensorflow.keras import layers
-from tensorflow.keras import models
-from tensorflow.keras import Sequential
-from tensorflow.keras.preprocessing.sequence import pad_sequences
-from tensorflow.keras.preprocessing.text import Tokenizer
-from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
+from tensorflow import keras
+from keras.models import Sequential
+from keras.layers import Embedding, Dense, MaxPool1D, GRU, Dropout
+from keras.callbacks import EarlyStopping, ModelCheckpoint
+from tweet_911.Model.utils import split_data, tokenize_data, pad_data
 
 
-
-
-
-def split_data():
-    #identify X,y
-    X = data['tweet_clean']
-    y = data.actionable
-
-    #split data
-    return train_test_split( X, y, test_size=0.30, random_state=42)
-
-
-def tokenize_data(X_train, X_test):
-    # tokenize
-    tk =Tokenizer()
-    tk.fit_on_texts(X_train)
-
-    vocab_size = len(tk.word_index)
-    print(f'There are {vocab_size} different words in your corpus')
-
-    return vocab_size, tk.texts_to_sequences(X_train), tk.texts_to_sequences(X_test)
-
-def pad_data(X_train_token, X_test_token):
-
-    X_train_pad = pad_sequences(X_train_token, dtype='float32', padding='post', maxlen = 20)
-    X_test_pad = pad_sequences(X_test_token, dtype='float32', padding='post', maxlen = 20)
-
-    return X_train_pad, X_test_pad
-
-def initialize_model():
-
-    vocab_size, X_train_token, X_test_token = tokenize_data()
-
+def initialize_model(vocab_size, embedding_dim=50):
     model = Sequential()
-
-    model.add(layers.Embedding(input_dim=vocab_size+1, output_dim=100, mask_zero=True))
-
-
-
-    model.add(layers.GRU(units=256, activation='tanh',return_sequences=True))
-
-    model.add(layers.GRU(units=128, activation='tanh',return_sequences=True))
-
-    model.add(layers.GRU(units=64, activation='tanh',return_sequences=True))
-
-    model.add(layers.GRU(units=32, activation='tanh'))
-
-
-    model.add(layers.Dense(1024, activation='relu'))
-    model.add(layers.Dropout(rate=0.2))
-    model.add(layers.Dense(256, activation='relu'))
-    model.add(layers.Dropout(rate=0.2))
-
-    model.add(layers.Dense(1, activation='sigmoid'))
-
-
-
+    model.add(Embedding(input_dim=vocab_size+1, output_dim=embedding_dim, mask_zero=True))
+    model.add(GRU(units=256, activation='tanh',return_sequences=True))
+    model.add(GRU(units=128, activation='tanh',return_sequences=True))
+    model.add(GRU(units=64, activation='tanh',return_sequences=True))
+    model.add(GRU(units=32, activation='tanh'))
+    model.add(Dense(1024, activation='relu'))
+    model.add(Dropout(rate=0.2))
+    model.add(Dense(256, activation='relu'))
+    model.add(Dropout(rate=0.2))
 
     model.compile(
             loss='binary_crossentropy',
@@ -86,26 +35,13 @@ def initialize_model():
 
 def GRU_model():
     print(Fore.YELLOW + '🦾 GRU model loading' + Fore.YELLOW)
+    vocab_size, X_train_token, X_test_token = tokenize_data()
 
-    # set params
-    max_features =10000
-    max_len=20
-    embedding_dim=50
-    batch_size = 32
-    patience=20
-    validation_split=0.2
-    epochs=1
+    X_train_pad, X_test_pad = pad_data(X_train_token, X_test_token)
+    X_train, X_test, y_train, y_test = split_data()
 
-    X_train, X_test,y_train, y_test = split_data()
-    vocab_size, X_train_token, X_test_token = tokenize_data(X_train, X_test)
-
-    # Pad the inputs
-    X_train_pad = pad_sequences(X_train_token, dtype='float32', padding='post',maxlen=max_len)
-    X_test_pad = pad_sequences(X_test_token, dtype='float32', padding='post',maxlen=max_len)
-
-
-    model = initialize_model()
-    es = EarlyStopping(patience=patience, restore_best_weights=True)
+    model = initialize_model(vocab_size)
+    es = EarlyStopping(patience=10, restore_best_weights=True)
 
     checkpoint_path = "modelweights/model_gru.h5"
     checkpoint_dir = os.path.dirname(checkpoint_path)
