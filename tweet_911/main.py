@@ -40,9 +40,7 @@ def main():
     # print(data_cleaned['test_regex'].value_counts())
 
 
-#@mlflow_run
-
-
+@mlflow_run
 def train(
         validation_split: float = 0.2,
         batch_size = 32,
@@ -77,7 +75,7 @@ def train(
     es = EarlyStopping(patience=patience, restore_best_weights=True, monitor='val_precision')
 
     checkpoint_path = os.path.join(f'Data/checkpoint/{MLFLOW_MODEL_NAME}-model-{MLFLOW_EXPERIMENT}','-{epoch:02d}-{val_accuracy:.2f}.hdf5')
-    check = ModelCheckpoint(checkpoint_path, monitor='val_recall ', verbose=1, save_best_only=True)
+    check = ModelCheckpoint(checkpoint_path, verbose=1, save_best_only=True)
     epochs = 1
     history = model.fit(
         X_train_pad, y_train,
