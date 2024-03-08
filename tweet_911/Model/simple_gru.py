@@ -1,88 +1,44 @@
-from colorama import Fore
-import pandas as pd
 import numpy as np
+import pandas as pd
+from colorama import Fore
 import os
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.model_selection import train_test_split, cross_val_predict
-from sklearn.pipeline import make_pipeline, Pipeline
+
 from sklearn.metrics import classification_report
-from tempfile import mkdtemp
 
-from tensorflow.keras.metrics import Recall
-from tensorflow.keras import layers
-from tensorflow.keras import models
-from tensorflow.keras import Sequential
-from tensorflow.keras.preprocessing.sequence import pad_sequences
-from tensorflow.keras.preprocessing.text import Tokenizer
-from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
+from tensorflow import keras
+from keras.models import Sequential
+from keras.layers import Embedding, Dense, MaxPool1D, GRU, Dropout
+from keras.callbacks import EarlyStopping, ModelCheckpoint
+from tweet_911.Model.utils import split_data, tokenize_data, pad_data
 
 
-
-
-
-def split_data(data=pd.read_csv('Data/clean_data.csv', index_col=0)):
-    X = data['tweet_text']
-    y = data.actionable
-
-    # Split into Train/Test
-    return train_test_split(X, y, test_size=0.3)
-
-def tokenize_data():
-    X_train, X_test, y_train, y_test = split_data()
-    # This initializes a Keras utilities that does all the tokenization for you
-    tokenizer = Tokenizer()
-
-    # The tokenization learns a dictionary that maps a token (integer) to each word
-    # It can be done only on the train set - we are not supposed to know the test set!
-    # This tokenization also lowercases your words, apply some filters, and so on - you can check the doc if you want
-    tokenizer.fit_on_texts(X_train)
-
-    vocab_size = len(tokenizer.word_index)
-
-    # We apply the tokenization to the train and test set
-    X_train_token = tokenizer.texts_to_sequences(X_train)
-    X_test_token = tokenizer.texts_to_sequences(X_test)
-
-    return vocab_size, X_train_token, X_test_token
-
-def pad_data(X_train_token, X_test_token):
-
-    X_train_pad = pad_sequences(X_train_token, dtype='float32', padding='pre')
-    X_test_pad = pad_sequences(X_test_token, dtype='float32', padding='pre')
-
-    return X_train_pad, X_test_pad
-
-def initialize_model(vocab_size):
-
+def initialize_model(vocab_size, embedding_dim=50):
     model = Sequential()
-
-    model.add(layers.Embedding(input_dim=vocab_size+1, output_dim=2, mask_zero=True))
-
-    model.add(layers.GRU(units=64, activation='tanh', return_sequences=True))
-    model.add(layers.GRU(units=32, activation='tanh', return_sequences=True))
-
-    model.add(layers.GRU(units=16, activation='tanh'))
-
-
-    model.add(layers.Dense(1, activation='sigmoid'))
-
+    model.add(Embedding(input_dim=vocab_size+1, output_dim=100, mask_zero=True))
+    model.add(GRU(units=256, activation='tanh',return_sequences=True))
+    model.add(GRU(units=128, activation='tanh',return_sequences=True))
+    model.add(GRU(units=64, activation='tanh',return_sequences=True))
+    model.add(GRU(units=32, activation='tanh'))
+    model.add(Dense(1024, activation='relu'))
+    model.add(Dropout(rate=0.2))
+    model.add(Dense(256, activation='relu'))
+    model.add(Dropout(rate=0.2))
+    model.add(Dense(1, activation='sigmoid'))
 
     model.compile(
             loss='binary_crossentropy',
             optimizer='adam',
-            metrics=['accuracy', Recall()]
+            metrics=['accuracy', 'Recall', 'Precision']
     )
 
     return model
 
 
 def GRU_model():
-    print(Fore.YELLOW + 'Le GRU est lancé' + Fore.YELLOW)
-
-    vocab_size, X_train_token, X_test_token = tokenize_data()
-
-    X_train_pad, X_test_pad = pad_data(X_train_token, X_test_token)
+    print(Fore.YELLOW + '🦾 GRU model loading' + Fore.YELLOW)
     X_train, X_test, y_train, y_test = split_data()
+    vocab_size, X_train_token, X_test_token = tokenize_data(X_train, X_test)
+    X_train_pad, X_test_pad = pad_data(X_train_token, X_test_token)
 
     model = initialize_model(vocab_size)
     es = EarlyStopping(patience=10, restore_best_weights=True)
