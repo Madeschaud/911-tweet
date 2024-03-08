@@ -27,7 +27,7 @@ app.add_middleware(
 # The trick is to load the model in memory when the Uvicorn server starts
 # and then store the model in an `app.state.model` global variable, accessible across all routes!
 # This will prove very useful for the Demo Day
-app.state.model = load_model()
+app.state.model = load_model('Staging')
 
 # def padding_tweet(tweet):
 #     tokenizer = Tokenizer()
