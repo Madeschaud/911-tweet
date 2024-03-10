@@ -12,17 +12,17 @@ from keras.callbacks import EarlyStopping, ModelCheckpoint
 from tweet_911.Model.utils import split_data, tokenize_data, pad_data
 
 
-def initialize_model(vocab_size, embedding_dim=50):
+def initialize_model(vocab_size, embedding_dim=100):
     model = Sequential()
-    model.add(Embedding(input_dim=vocab_size+1, output_dim=100, mask_zero=True))
+    model.add(Embedding(input_dim=vocab_size+1, output_dim=embedding_dim, mask_zero=True))
     model.add(GRU(units=256, activation='tanh',return_sequences=True))
     model.add(GRU(units=128, activation='tanh',return_sequences=True))
     model.add(GRU(units=64, activation='tanh',return_sequences=True))
     model.add(GRU(units=32, activation='tanh'))
     model.add(Dense(1024, activation='relu'))
-    model.add(Dropout(rate=0.2))
+    model.add(Dropout(rate=0.5))
     model.add(Dense(256, activation='relu'))
-    model.add(Dropout(rate=0.2))
+    model.add(Dropout(rate=0.5))
     model.add(Dense(1, activation='sigmoid'))
 
     model.compile(
