@@ -10,21 +10,30 @@ from keras.models import Sequential
 from keras.layers import Embedding, Dense, MaxPool1D, GRU, Dropout
 from keras.callbacks import EarlyStopping, ModelCheckpoint
 from tweet_911.Model.utils import split_data, tokenize_data, pad_data
+from keras import regularizers, layers
 
 
 def initialize_model(vocab_size, embedding_dim=100):
+    reg_l1 = regularizers.L1(0.005)
+    reg_l2 = regularizers.L2(0.005)
+    reg_l2_nrv = regularizers.L2(0.01)
+    reg_l1_l2 = regularizers.l1_l2(l1=0.005, l2=0.0005)
+
     model = Sequential()
-    model.add(Embedding(input_dim=vocab_size+1, output_dim=2, mask_zero=True))
-    model.add(Dropout(rate=0.5))
 
-    model.add(GRU(units=8, activation='tanh',return_sequences=True))
-    model.add(Dropout(rate=0.5))
+    model.add(layers.Embedding(input_dim=vocab_size+1, output_dim=50, mask_zero=True))
+    #model.add(layers.Dropout(rate=0.5))
 
-    model.add(GRU(units=4, activation='tanh'))
-    model.add(Dropout(rate=0.5))
+    model.add(layers.GRU(units=8, activation='tanh',return_sequences=True))
+    model.add(layers.Dropout(rate=0.5))
 
-    model.add(Dense(1, activation='sigmoid'))
+    model.add(layers.GRU(units=4, activation='tanh', kernel_regularizer = reg_l1))
+    model.add(layers.Dropout(rate=0.5))
 
+    model.add(layers.Dense(16, activation='relu', kernel_regularizer = reg_l1))
+    model.add(layers.Dropout(rate=0.5))
+
+    model.add(layers.Dense(1, activation='sigmoid'))
     model.compile(
             loss='binary_crossentropy',
             optimizer='adam',
