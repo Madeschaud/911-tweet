@@ -27,16 +27,13 @@ def initialize_model(vocab_size, embedding_dim=100):
     model.add(layers.GRU(units=8, activation='tanh',return_sequences=True))
     model.add(layers.Dropout(rate=0.5))
 
-    model.add(layers.GRU(units=4, activation='tanh', kernel_regularizer = reg_l1))
-    model.add(layers.Dropout(rate=0.5))
-
-    model.add(layers.Dense(16, activation='relu', kernel_regularizer = reg_l1))
-    model.add(layers.Dropout(rate=0.5))
+    model.add(layers.Dense(8, activation='relu', kernel_regularizer = reg_l1))
+    model.add(layers.Dropout(rate=0.3))
 
     model.add(layers.Dense(1, activation='sigmoid'))
     model.compile(
             loss='binary_crossentropy',
-            optimizer='adam',
+            optimizer='rmsprop',
             metrics=['accuracy', 'Recall', 'Precision']
     )
 
@@ -50,7 +47,7 @@ def GRU_model():
     X_train_pad, X_test_pad = pad_data(X_train_token, X_test_token)
 
     model = initialize_model(vocab_size)
-    es = EarlyStopping(patience=10, restore_best_weights=True)
+    es = EarlyStopping(patience=5, restore_best_weights=True, monitor = 'val_precision',)
 
     checkpoint_path = "modelweights/model_gru.h5"
     checkpoint_dir = os.path.dirname(checkpoint_path)
@@ -58,7 +55,7 @@ def GRU_model():
 
     checkpoint = ModelCheckpoint(
         filepath = checkpoint_path,
-        monitor = 'val_accuracy',
+        monitor = 'val_precision',
         verbose = 1,
         save_best_only = True,
         save_weights_only = False,
