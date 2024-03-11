@@ -14,7 +14,8 @@ from keras import regularizers, layers
 
 
 def initialize_model(vocab_size, embedding_dim=100):
-    reg_l1 = regularizers.L1(0.005)
+
+    reg_l1 = regularizers.L1(0.01)
     reg_l2 = regularizers.L2(0.005)
     reg_l2_nrv = regularizers.L2(0.01)
     reg_l1_l2 = regularizers.l1_l2(l1=0.005, l2=0.0005)
@@ -22,12 +23,10 @@ def initialize_model(vocab_size, embedding_dim=100):
     model = Sequential()
 
     model.add(layers.Embedding(input_dim=vocab_size+1, output_dim=50, mask_zero=True))
-    #model.add(layers.Dropout(rate=0.5))
 
-    model.add(layers.GRU(units=8, activation='tanh',return_sequences=True))
-    model.add(layers.Dropout(rate=0.5))
+    model.add(layers.GRU(units=128, activation='tanh'))
 
-    model.add(layers.Dense(8, activation='relu', kernel_regularizer = reg_l1))
+    model.add(layers.Dense(128, activation='relu', kernel_regularizer = reg_l1))
     model.add(layers.Dropout(rate=0.3))
 
     model.add(layers.Dense(1, activation='sigmoid'))
