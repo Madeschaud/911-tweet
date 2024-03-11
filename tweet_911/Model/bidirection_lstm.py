@@ -30,13 +30,23 @@ def initialize_model(vocab_size, embedding_dim=50):
     # model.add(Dense(1, activation='sigmoid'))
 
     model.add(Embedding(input_dim=vocab_size+1,output_dim=embedding_dim, mask_zero=True))
-    model.add(Bidirectional(LSTM(256, activation='tanh', return_sequences=True)))
-    model.add(Bidirectional(LSTM(128, return_sequences=True)))
-    model.add(Bidirectional(LSTM(64)))
-    model.add(Dense(64, activation='relu'))
-    model.add(Dropout(0.2))
+    # model.add(Bidirectional(LSTM(256, activation='tanh', return_sequences=True)))
+    # model.add(Bidirectional(LSTM(128, return_sequences=True)))
+    model.add(Bidirectional(LSTM(32, activation='tanh')))
     model.add(Dense(32, activation='relu'))
+    model.add(Dropout(0.2))
+    model.add(Dense(16, activation='relu'))
     model.add(Dense(1, activation='sigmoid'))
+
+    #overfit -- V2
+    # model.add(Embedding(input_dim=vocab_size+1,output_dim=embedding_dim, mask_zero=True))
+    # model.add(Bidirectional(LSTM(256, activation='tanh', return_sequences=True)))
+    # model.add(Bidirectional(LSTM(128, return_sequences=True)))
+    # model.add(Bidirectional(LSTM(64)))
+    # model.add(Dense(64, activation='relu'))
+    # model.add(Dropout(0.2))
+    # model.add(Dense(32, activation='relu'))
+    # model.add(Dense(1, activation='sigmoid'))
 
     #compile
     model.compile(loss='binary_crossentropy', optimizer='rmsprop', metrics=['accuracy', 'Recall', 'Precision'])
