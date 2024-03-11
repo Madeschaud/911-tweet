@@ -30,7 +30,7 @@ data = load_data(10000)
 countries_to_highlight = []
 st.sidebar.header("Choose the places you want to go in prio:")
 
-for index, event in data.iterrows():
+for index, event in data.head(20).iterrows():
     tweet_text = event['tweet_text']
     actionable = event['actionable']
 

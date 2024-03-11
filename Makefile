@@ -49,6 +49,9 @@ load_model:
 train_model:
 	@python -c 'from tweet_911.main import train; train()'
 
+evaluate_model:
+	@python -c 'from tweet_911.main import evaluate; evaluate()'
+
 reset_local_files:
 	rm -rf ${ML_DIR}
 	mkdir -p ~/.lewagon/mlops/data/

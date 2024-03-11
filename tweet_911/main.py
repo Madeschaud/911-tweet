@@ -7,7 +7,7 @@ import pandas as pd
 import seaborn as sns
 from tweet_911.Model import cnn, bidirection_lstm, simple_gru, cnn_rnn, lstm, baseline, boost_naive_base
 from tweet_911.registry import *
-from tweet_911.Model.utils import split_data, tokenize_data, pad_data
+from tweet_911.Model.utils import split_data, tokenize_data, pad_data, evaluate_model
 from keras.callbacks import EarlyStopping, ModelCheckpoint
 from sklearn.metrics import classification_report
 
@@ -28,8 +28,8 @@ def hist_word_distrib(action, data_cleaned):
         print('max = ', data_cleaned['words_per_tweet'].max())
 
 
-def main():
-    print(Fore.RED + 'Main' + Fore.WHITE)
+# def main():
+#     print(Fore.RED + 'Main' + Fore.WHITE)
     # if not os.path.isfile('tweet_911/Data/clean_data.csv'):
     #     preprocessor_all()
     # data_cleaned = pandas.read_csv('tweet_911/Data/clean_data.csv', index_col=0)
@@ -46,6 +46,7 @@ def main():
 @mlflow_run
 def train(
         validation_split: float = 0.2,
+        validation_data = None,
         batch_size = 32,
         patience = 20,
         embedding_dim = 50
@@ -63,6 +64,11 @@ def train(
     X_train, X_test, y_train, y_test = split_data()
     vocab_size, X_train_token, X_test_token, tokenizer = tokenize_data(X_train, X_test)
     X_train_pad, X_test_pad = pad_data(X_train_token, X_test_token)
+
+    #Save XTest & Ytest
+    pd.DataFrame(X_test_pad).to_csv('tweet_911/Data/Test/xtestpad.csv', index=True)
+    y_test.to_csv('tweet_911/Data/Test/ytest.csv', index=True)
+
     # saving
     with open('tweet_911/Data/tokenizer.pickle', 'wb') as handle:
         pickle.dump(tokenizer, handle, protocol=pickle.HIGHEST_PROTOCOL)
@@ -81,7 +87,7 @@ def train(
 
     checkpoint_path = os.path.join(f'Data/checkpoint/{MLFLOW_MODEL_NAME}-model-{MLFLOW_EXPERIMENT}','-{epoch:02d}-{val_accuracy:.2f}.hdf5')
     check = ModelCheckpoint(checkpoint_path, verbose=1, save_best_only=True)
-    epochs = 1
+    epochs = 100
     history = model.fit(
         X_train_pad, y_train,
         batch_size=batch_size,
@@ -119,7 +125,40 @@ def train(
 
     return val_acc, val_rec, val_precision
 
+
+@mlflow_run
+def evaluate(
+    stage: str = "Staging"
+):
+    """
+    Evaluate the performance of the latest production model on processed data
+    Return MAE as a float
+    """
+    print(Fore.MAGENTA + "\n⭐️ Launching Eval model" + Style.RESET_ALL)
+    model = load_model(stage=stage)
+    assert model is not None
+
+    Xtest=pd.read_csv('tweet_911/Data/Test/xtestpad.csv', index_col=0)
+    ytest=pd.read_csv('tweet_911/Data/Test/ytest.csv', index_col=0)
+
+    if Xtest.shape[0] == 0 or ytest.shape[0] == 0:
+        print("❌ No data to evaluate on")
+        return None
+
+    metrics_dict = evaluate_model(model=model, X=Xtest, y=ytest)
+    print(metrics_dict)
+
+    params = dict(
+        context="evaluate", # Package behavior
+        row_count=len(Xtest)
+    )
+
+    save_results(params=params, metrics=metrics_dict)
+
+    print("✅ evaluate() done \n")
+
+
 if __name__ == '__main__':
-    train()
-    # evaluate()
+    # train()
+    evaluate()
     # pred()
