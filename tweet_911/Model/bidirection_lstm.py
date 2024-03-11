@@ -12,7 +12,7 @@ from tensorflow import keras
 from keras.models import Sequential
 from keras.layers import Embedding, Dense, MaxPool1D, Dropout, Bidirectional, LSTM
 from keras.callbacks import EarlyStopping, ModelCheckpoint
-from tweet_911.Model.utils import split_data, tokenize_data, pad_data
+from utils import split_data, tokenize_data, pad_data
 
 def initialize_model(vocab_size, embedding_dim=50):
     # build model
