@@ -46,6 +46,7 @@ def hist_word_distrib(action, data_cleaned):
 @mlflow_run
 def train(
         validation_split: float = 0.2,
+        validation_data = None,
         batch_size = 32,
         patience = 5,
         embedding_dim = 50
@@ -85,8 +86,8 @@ def train(
     es = EarlyStopping(patience=patience, restore_best_weights=True, monitor='val_precision')
 
     checkpoint_path = os.path.join(f'Data/checkpoint/{MLFLOW_MODEL_NAME}-model-{MLFLOW_EXPERIMENT}','-{epoch:02d}-{val_accuracy:.2f}.hdf5')
-    check = ModelCheckpoint(checkpoint_path, verbose=1, save_best_only=True)
-    epochs = 10
+    check = ModelCheckpoint(checkpoint_path, verbose=1, save_best_only=True, monitor='val_precision')
+    epochs = 100
     history = model.fit(
         X_train_pad, y_train,
         batch_size=batch_size,
@@ -146,20 +147,19 @@ def evaluate(
 
     metrics_dict = evaluate_model(model=model, X=Xtest, y=ytest)
     print(metrics_dict)
-    # mae = metrics_dict["mae"]
 
     params = dict(
         context="evaluate", # Package behavior
-        row_count=len(Xtest)
+        row_count=len(Xtest),
+        model_name=MLFLOW_MODEL_NAME
     )
 
     save_results(params=params, metrics=metrics_dict)
 
     print("✅ evaluate() done \n")
 
-    # return mae
 
 if __name__ == '__main__':
-    # train()
+    train()
     evaluate()
     # pred()

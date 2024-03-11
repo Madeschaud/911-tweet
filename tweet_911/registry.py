@@ -15,8 +15,10 @@ def save_results(params: dict, metrics: dict) -> None:
     if MODEL_TARGET == "mlflow":
         if params is not None:
             mlflow.log_params(params)
+            print("✅ params saved on mlflow")
         if metrics is not None:
             mlflow.log_metrics(metrics)
+            print("✅ metrics saved on mlflow")
 
         print("✅ Results saved on mlflow")
 
