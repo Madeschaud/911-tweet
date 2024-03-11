@@ -86,7 +86,7 @@ def train(
 
     checkpoint_path = os.path.join(f'Data/checkpoint/{MLFLOW_MODEL_NAME}-model-{MLFLOW_EXPERIMENT}','-{epoch:02d}-{val_accuracy:.2f}.hdf5')
     check = ModelCheckpoint(checkpoint_path, verbose=1, save_best_only=True)
-    epochs = 1
+    epochs = 100
     history = model.fit(
         X_train_pad, y_train,
         batch_size=batch_size,
