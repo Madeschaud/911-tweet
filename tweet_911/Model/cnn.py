@@ -17,8 +17,6 @@ def initialize_model(vocab_size, embedding_dim=50) -> keras.models:
     model.add(Embedding(input_dim=vocab_size+1, output_dim=embedding_dim, mask_zero=True, input_length=max_length))
     model.add(Conv1D(128, 3, padding='same', activation="relu"))
     model.add(MaxPool1D(pool_size=3))
-    model.add(Conv1D(64, 3, padding='same', activation='relu'))
-    model.add(MaxPool1D(pool_size=3))
     model.add(Flatten())
     model.add(Dense(32, activation='relu'))
     model.add(Dropout(0.2))

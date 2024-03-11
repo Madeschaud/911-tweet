@@ -47,7 +47,7 @@ def hist_word_distrib(action, data_cleaned):
 def train(
         validation_split: float = 0.2,
         batch_size = 32,
-        patience = 20,
+        patience = 5,
         embedding_dim = 50
     ) -> float:
 
@@ -86,7 +86,7 @@ def train(
 
     checkpoint_path = os.path.join(f'Data/checkpoint/{MLFLOW_MODEL_NAME}-model-{MLFLOW_EXPERIMENT}','-{epoch:02d}-{val_accuracy:.2f}.hdf5')
     check = ModelCheckpoint(checkpoint_path, verbose=1, save_best_only=True)
-    epochs = 100
+    epochs = 10
     history = model.fit(
         X_train_pad, y_train,
         batch_size=batch_size,
