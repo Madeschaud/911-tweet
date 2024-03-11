@@ -25,16 +25,14 @@ data =pd.read_csv('tweet_911/Data/clean_data.csv')
 data.head()
 
 
-def initialize_model(vocab_size, embedding_dim=50):
-    # build model
+def initialize_model(vocab_size, embedding_dim=50): # build model
     model = Sequential()
     #embedding
     model.add(Embedding(input_dim=vocab_size+1,output_dim=embedding_dim, mask_zero=True))
 
     #lstm
-    model.add(LSTM(units=64, return_sequences=True, activation= 'tanh'))
-    model.add(LSTM(32, return_sequences=True))
-    model.add(LSTM(16))
+    model.add(LSTM(units=32, return_sequences=True, activation= 'tanh'))
+    model.add(Dense(16, return_sequences=True))
     model.add(Dense(1, activation='sigmoid'))
 
     #compile
