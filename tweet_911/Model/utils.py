@@ -21,7 +21,7 @@ from sklearn.model_selection import cross_val_score, train_test_split
 # from keras.layers import Embedding, Dense, MaxPool1D, Conv1D, Flatten, Dropout
 # from keras.callbacks import EarlyStopping, ModelCheckpoint
 # from keras.optimizers import Adam, RMSprop
-from tensorflow.keras.preprocessing.sequence import pad_sequences
+from keras.preprocessing.sequence import pad_sequences
 from keras.preprocessing.text import Tokenizer
 # from keras.metrics import Accuracy, Recall, Precision
 
