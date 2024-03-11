@@ -8,8 +8,9 @@ import tensorflow as tf
 from tensorflow import keras
 from keras.preprocessing import sequence
 from keras.models import Sequential
-from keras.layers import Embedding, LSTM, Dense
+from keras.layers import Embedding, LSTM, Dense, Dropout
 from keras import layers
+from keras.regularizers import l2
 
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from keras.callbacks import ModelCheckpoint, EarlyStopping
@@ -34,12 +35,15 @@ def initialize_model(vocab_size, embedding_dim=50):
     #lstm
     #model.add(LSTM(units=64, return_sequences=True, activation= 'tanh'))
     #model.add(LSTM(32, return_sequences=True))
-    model.add(LSTM(16, activation='tanh'))
-    model.add(Dense(1, activation='sigmoid'))
+    model.add(LSTM(8, activation='tanh',kernel_regularizer=l2(0.01)))
+    model.add(Dropout(0.5))
+
+    model.add(Dense(1, activation='sigmoid', kernel_regularizer=l2(0.01)))
 
     #compile
-    model.compile(loss='binary_crossentropy', optimizer= 'adam', metrics= ['accuracy', 'Recall', 'Precision']) #check f1 et AUC
+    model.compile(loss='binary_crossentropy', optimizer= 'rmsprop', metrics= ['accuracy', 'Recall', 'Precision'])
     return model
+
 
 # def model_lstm():
 #     print("ici lstm")
