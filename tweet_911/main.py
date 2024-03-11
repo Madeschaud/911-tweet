@@ -154,6 +154,7 @@ def evaluate(
         model_name=MLFLOW_MODEL_NAME
     )
 
+    print(model.summary())
     save_results(params=params, metrics=metrics_dict)
 
     print("✅ evaluate() done \n")

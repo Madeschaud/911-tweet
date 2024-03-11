@@ -51,31 +51,31 @@ for index, event in data.head(20).iterrows():
 
 
 # Load the GeoJSON file -- country boundaries
-with open('../Data/countries_boundaries.geojson', 'r') as f:
-    world_geojson = json.load(f)
+# with open('../Data/countries_boundaries.geojson', 'r') as f:
+#     world_geojson = json.load(f)
 
 
 
-def style_function(feature):
-    if feature['properties']['NAME'] in countries_to_highlight:
-        return {
-            'fillColor': '#ffaf00',
-            'color': 'black',
-            'weight': 1.5,
-            'fillOpacity': 0.5
-        }
-    return {
-        'fillColor': '#fafafa',
-        'color': 'black',
-        'weight': 0.5,
-        'fillOpacity': 0.1
-    }
+# def style_function(feature):
+#     if feature['properties']['NAME'] in countries_to_highlight:
+#         return {
+#             'fillColor': '#ffaf00',
+#             'color': 'black',
+#             'weight': 1.5,
+#             'fillOpacity': 0.5
+#         }
+#     return {
+#         'fillColor': '#fafafa',
+#         'color': 'black',
+#         'weight': 0.5,
+#         'fillOpacity': 0.1
+#     }
 
-m = folium.Map(location=[20, 0], zoom_start=2.3)
+# m = folium.Map(location=[20, 0], zoom_start=2.3)
 
-folium.GeoJson(
-    world_geojson,
-    style_function=style_function
-).add_to(m)
+# folium.GeoJson(
+#     world_geojson,
+#     style_function=style_function
+# ).add_to(m)
 
-folium_static(m)
+# folium_static(m)

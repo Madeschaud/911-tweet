@@ -32,14 +32,23 @@ def initialize_model(vocab_size, embedding_dim=50):
     #embedding
     model.add(Embedding(input_dim=vocab_size+1,output_dim=embedding_dim, mask_zero=True))
 
-    #lstm
+    #lstm big -- natural-disaster-tweet_jbach_lstm_big VM
     model.add(LSTM(units=128, return_sequences=True, activation= 'tanh'))
     model.add(LSTM(64, return_sequences=True))
-    model.add(LSTM(31, activation='tanh'))
+    model.add(LSTM(32, activation='tanh'))
     model.add(Dense(32, activation='relu'))
     model.add(Dropout(0.2))
     model.add(Dense(16, activation='relu'))
     model.add(Dense(1, activation='sigmoid'))
+
+    #lstm small -- natural-disaster-tweet_jbach_lstm_small local
+    # model.add(LSTM(units=32, return_sequences=True, activation= 'tanh'))
+    # model.add(LSTM(16, return_sequences=True))
+    # model.add(LSTM(8, activation='tanh'))
+    # model.add(Dense(32, activation='relu'))
+    # model.add(Dropout(0.2))
+    # model.add(Dense(16, activation='relu'))
+    # model.add(Dense(1, activation='sigmoid'))
 
     #compile
     model.compile(loss='binary_crossentropy', optimizer= 'rmsprop', metrics= ['accuracy', 'Recall', 'Precision'])
