@@ -46,6 +46,7 @@ def hist_word_distrib(action, data_cleaned):
 @mlflow_run
 def train(
         validation_split: float = 0.2,
+        validation_data = None,
         batch_size = 32,
         patience = 20,
         embedding_dim = 50
@@ -146,7 +147,6 @@ def evaluate(
 
     metrics_dict = evaluate_model(model=model, X=Xtest, y=ytest)
     print(metrics_dict)
-    # mae = metrics_dict["mae"]
 
     params = dict(
         context="evaluate", # Package behavior
@@ -157,7 +157,6 @@ def evaluate(
 
     print("✅ evaluate() done \n")
 
-    # return mae
 
 if __name__ == '__main__':
     # train()

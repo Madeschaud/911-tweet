@@ -73,82 +73,83 @@ def plot_learning_curves(history, timestamp):
     plt.show()
     plt.savefig(f'Data/LearningCurve/loss-{timestamp}.png')
 
-def model_bidirectional_lstm():
-    # set params
-    max_features =10000
-    max_len=20
-    embedding_dim=50
-    batch_size = 32
-    patience=20
-    validation_split=0.2
-    epochs=1
+# def model_bidirectional_lstm():
+#     # set params
+#     max_features =10000
+#     max_len=20
+#     embedding_dim=50
+#     batch_size = 32
+#     patience=20
+#     validation_split=0.2
+#     epochs=1
 
-    X_train, X_test,y_train, y_test = split_data()
-    vocab_size, X_train_token, X_test_token = tokenize_data(X_train, X_test)
-    X_train_pad, X_test_pad = pad_data(X_train_token, X_test_token, max_len)
+#     X_train, X_test,y_train, y_test = split_data()
+#     vocab_size, X_train_token, X_test_token = tokenize_data(X_train, X_test)
+#     X_train_pad, X_test_pad = pad_data(X_train_token, X_test_token, max_len)
 
-    model = initialize_model(vocab_size, embedding_dim)
+#     model = initialize_model(vocab_size, embedding_dim)
 
-    #initialize
-    print(Fore.MAGENTA + 'Le Bidirectional LSTM est lancé' + Fore.MAGENTA)
-    es = EarlyStopping(patience=patience, restore_best_weights=True, monitor='val_precision')
+#     #initialize
+#     print(Fore.MAGENTA + 'Le Bidirectional LSTM est lancé' + Fore.MAGENTA)
+#     es = EarlyStopping(patience=patience, restore_best_weights=True, monitor='val_precision')
 
-    timestamp = time.strftime("%Y%m%d-%H%M%S")
+#     timestamp = time.strftime("%Y%m%d-%H%M%S")
 
-    # Train the model
-    checkpoint_path = 'modelweights/model_gru.h5'
-    check = ModelCheckpoint(checkpoint_path, monitor='val_precision', verbose=1, save_best_only=True)
-    history = model.fit(X_train_pad,
-                    y_train, batch_size=batch_size,
-                    epochs=epochs,
-                    shuffle=True,
-                    validation_split = validation_split, #IMPORTANT éviter le data leakage
-                    callbacks = [es, check],
-                    verbose = 1)
-    plot_learning_curves(history, timestamp)
+#     # Train the model
+#     checkpoint_path = 'modelweights/model_gru.h5'
+#     check = ModelCheckpoint(checkpoint_path, monitor='val_precision', verbose=1, save_best_only=True)
+#     history = model.fit(X_train_pad,
+#                     y_train, batch_size=batch_size,
+#                     validation_data=[X_val, y_val],
+#                     epochs=epochs,
+#                     shuffle=True,
+#                     validation_split = validation_split, #IMPORTANT éviter le data leakage
+#                     callbacks = [es, check],
+#                     verbose = 1)
+#     # plot_learning_curves(history, timestamp)
 
-    # # Evaluate the model
-    # loss, accuracy = model.evaluate(X_test_pad, y_test)
-    # print(f'Test loss: {loss:.4f}')
-    # print(f'Test accuracy: {accuracy:.4f}')
+#     # # Evaluate the model
+#     # loss, accuracy = model.evaluate(X_test_pad, y_test)
+#     # print(f'Test loss: {loss:.4f}')
+#     # print(f'Test accuracy: {accuracy:.4f}')
 
-    print(history.history.keys())
-    params = dict(
-        context="train",
-        vocab_size=vocab_size,
-        batch_size=batch_size,
-        patience=patience,
-        validation_split=validation_split,
-        epochs=epochs
-    )
+#     print(history.history.keys())
+#     params = dict(
+#         context="train",
+#         vocab_size=vocab_size,
+#         batch_size=batch_size,
+#         patience=patience,
+#         validation_split=validation_split,
+#         epochs=epochs
+#     )
 
-    val_acc = np.min(history.history['val_accuracy'])
-    val_rec = np.min(history.history['val_recall'])
-    val_precision = np.min(history.history['val_precision'])
+#     val_acc = np.min(history.history['val_accuracy'])
+#     val_rec = np.min(history.history['val_recall'])
+#     val_precision = np.min(history.history['val_precision'])
 
-    metrics=dict(accuracy=val_acc, recall=val_rec, precision=val_precision)
+#     metrics=dict(accuracy=val_acc, recall=val_rec, precision=val_precision)
 
-    os.makedirs('Data/params-bi_lstm', exist_ok=True)
-
-
-    params_path = os.path.join('Data/', 'params-bi_lstm', f"{timestamp}.pickle")
-    with open(params_path, "wb") as file:
-        pickle.dump(params, file)
-
-    os.makedirs('Data/metrics-bi_lstm', exist_ok=True)
-    metrics_path = os.path.join('Data/', 'metrics-bi_lstm',  f"{timestamp}.pickle")
-    with open(metrics_path, "wb") as file:
-        pickle.dump(metrics, file)
-    # y_pred = model.predict(X_test_pad) # Make cross validated predictions of entire dataset
-    # print(classification_report(y_test,(y_pred > 0.5).astype(int))) # Pass predictions and true values to Classification report
+#     os.makedirs('Data/params-bi_lstm', exist_ok=True)
 
 
-    model_path = os.path.join('Data/', "models", f"{timestamp}.h5")
-    model.save(model_path)
+#     params_path = os.path.join('Data/', 'params-bi_lstm', f"{timestamp}.pickle")
+#     with open(params_path, "wb") as file:
+#         pickle.dump(params, file)
 
-    print("✅ train() done \n")
+#     os.makedirs('Data/metrics-bi_lstm', exist_ok=True)
+#     metrics_path = os.path.join('Data/', 'metrics-bi_lstm',  f"{timestamp}.pickle")
+#     with open(metrics_path, "wb") as file:
+#         pickle.dump(metrics, file)
+#     # y_pred = model.predict(X_test_pad) # Make cross validated predictions of entire dataset
+#     # print(classification_report(y_test,(y_pred > 0.5).astype(int))) # Pass predictions and true values to Classification report
 
-    # return val_acc, val_rec, val_precision
+
+#     model_path = os.path.join('Data/', "models", f"{timestamp}.h5")
+#     model.save(model_path)
+
+#     print("✅ train() done \n")
+
+#     # return val_acc, val_rec, val_precision
 
 
 

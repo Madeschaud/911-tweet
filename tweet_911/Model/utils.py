@@ -2,6 +2,8 @@
 import numpy as np
 from typing import Tuple
 from keras import Model
+import mlflow
+
 
 
 
@@ -115,12 +117,12 @@ def evaluate_model(
     """
     Evaluate trained model performance on the dataset
     """
-
-    print(Fore.BLUE + f"\nEvaluating model on {len(X)} rows..." + Style.RESET_ALL)
-
     if model is None:
         print(f"\n❌ No model to evaluate")
         return None
+
+    print(Fore.BLUE + f"\nEvaluating model on {len(X)} rows..." + Style.RESET_ALL)
+
 
     metrics = model.evaluate(
         x=X,
@@ -137,6 +139,6 @@ def evaluate_model(
     recall = metrics["recall"]
     precision = metrics["precision"]
 
-    print(f"✅ Model evaluated, LOSS: {round(loss, 2)}, ACC: {round(accuracy, 2)}, RECALL: {round(recall, 2)}, PRECISION: {round(precision, 2)}")
+    print(f"✅ results Ok")
 
     return metrics
