@@ -1,12 +1,16 @@
 # from sklearn.model_selection import KFold
 import numpy as np
+from typing import Tuple
+from keras import Model
+
+
 
 # from tensorflow import keras
 # from keras.callbacks import EarlyStopping, ModelCheckpoint
 
 import numpy as np
 import pandas as pd
-from colorama import Fore
+from colorama import Fore, Style
 # from sklearn.preprocessing import StandardScaler, MinMaxScaler, RobustScaler
 from sklearn.model_selection import cross_val_score, train_test_split
 # from sklearn.linear_model import LinearRegression, LogisticRegression
@@ -99,3 +103,40 @@ def pad_data(X_train_token, X_test_token, max_len=20):
     X_test_pad = pad_sequences(X_test_token, dtype='float32', padding='post', maxlen=max_len)
 
     return X_train_pad, X_test_pad
+
+
+
+def evaluate_model(
+        model: Model,
+        X: np.ndarray,
+        y: np.ndarray,
+        batch_size=32
+    ) -> Tuple[Model, dict]:
+    """
+    Evaluate trained model performance on the dataset
+    """
+
+    print(Fore.BLUE + f"\nEvaluating model on {len(X)} rows..." + Style.RESET_ALL)
+
+    if model is None:
+        print(f"\n❌ No model to evaluate")
+        return None
+
+    metrics = model.evaluate(
+        x=X,
+        y=y,
+        batch_size=batch_size,
+        verbose=0,
+        # callbacks=None,
+        return_dict=True
+    )
+    print(metrics)
+
+    loss = metrics["loss"]
+    accuracy = metrics["accuracy"]
+    recall = metrics["recall"]
+    precision = metrics["precision"]
+
+    print(f"✅ Model evaluated, LOSS: {round(loss, 2)}, ACC: {round(accuracy, 2)}, RECALL: {round(recall, 2)}, PRECISION: {round(precision, 2)}")
+
+    return metrics
