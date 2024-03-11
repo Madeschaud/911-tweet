@@ -32,9 +32,9 @@ def initialize_model(vocab_size, embedding_dim=50):
     model.add(Embedding(input_dim=vocab_size+1,output_dim=embedding_dim, mask_zero=True))
 
     #lstm
-    model.add(LSTM(units=64, return_sequences=True, activation= 'tanh'))
-    model.add(LSTM(32, return_sequences=True))
-    model.add(LSTM(16))
+    #model.add(LSTM(units=64, return_sequences=True, activation= 'tanh'))
+    #model.add(LSTM(32, return_sequences=True))
+    model.add(LSTM(16, activation='tanh'))
     model.add(Dense(1, activation='sigmoid'))
 
     #compile

@@ -48,7 +48,7 @@ def train(
         validation_split: float = 0.2,
         validation_data = None,
         batch_size = 32,
-        patience = 20,
+        patience = 5,
         embedding_dim = 50
     ) -> float:
 
