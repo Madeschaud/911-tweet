@@ -48,7 +48,7 @@ def train(
         validation_split: float = 0.2,
         validation_data = None,
         batch_size = 32,
-        patience = 20,
+        patience = 5,
         embedding_dim = 50
     ) -> float:
 
@@ -86,7 +86,7 @@ def train(
     es = EarlyStopping(patience=patience, restore_best_weights=True, monitor='val_precision')
 
     checkpoint_path = os.path.join(f'Data/checkpoint/{MLFLOW_MODEL_NAME}-model-{MLFLOW_EXPERIMENT}','-{epoch:02d}-{val_accuracy:.2f}.hdf5')
-    check = ModelCheckpoint(checkpoint_path, verbose=1, save_best_only=True)
+    check = ModelCheckpoint(checkpoint_path, verbose=1, save_best_only=True, monitor='val_precision')
     epochs = 100
     history = model.fit(
         X_train_pad, y_train,
@@ -150,7 +150,8 @@ def evaluate(
 
     params = dict(
         context="evaluate", # Package behavior
-        row_count=len(Xtest)
+        row_count=len(Xtest),
+        model_name=MLFLOW_MODEL_NAME
     )
 
     save_results(params=params, metrics=metrics_dict)
@@ -159,6 +160,6 @@ def evaluate(
 
 
 if __name__ == '__main__':
-    # train()
+    train()
     evaluate()
     # pred()
