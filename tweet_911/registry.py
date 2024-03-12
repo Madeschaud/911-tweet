@@ -7,7 +7,6 @@ import glob
 from mlflow.tracking import MlflowClient
 from tweet_911.params import *
 
-
 def save_results(params: dict, metrics: dict) -> None:
     """
     if MODEL_TARGET='mlflow', also persist them on MLflow
@@ -80,24 +79,30 @@ def load_model(stage="Production") -> keras.Model:
         mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
         client = MlflowClient()
         try:
-            model_version=client.get_latest_versions(name=MLFLOW_MODEL_NAME, stages=[stage])
-            model_uri= model_version[0].source
-            assert model_uri is not None
+            model_version_disaster=client.get_latest_versions(name=MLFLOW_MODEL_NAME_DISASTER, stages=[stage])
+            model_version_actionable=client.get_latest_versions(name=MLFLOW_MODEL_NAME_ACTIONABLE, stages=[stage])
+            model_uri_disaster= model_version_disaster[0].source
+            model_uri_actionable= model_version_actionable[0].source
+            assert model_uri_disaster is not None or model_uri_actionable is not None
         except:
-            print(f"No model named {MLFLOW_MODEL_NAME} found in stage {stage}")
+            print(f"No model1 named {MLFLOW_MODEL_NAME_DISASTER} found in stage {stage}")
+            print(f"or No model_actionable named {MLFLOW_MODEL_NAME_ACTIONABLE} found in stage {stage}")
+
+
             return None
-        model = mlflow.tensorflow.load_model(model_uri=model_uri)
+        model_disaster = mlflow.tensorflow.load_model(model_uri=model_uri_disaster)
+        model_actionable = mlflow.tensorflow.load_model(model_uri=model_uri_actionable)
         # print()
-        return model
+        return model_disaster, model_actionable
 
     else:
         return None
 
 
+################## CHECK W/ MARTIN ############################
 
 
-
-def mlflow_transition_model(current_stage: str, new_stage: str) -> None:
+def mlflow_transition_model(current_stage: str, new_stage: str, model_name=MLFLOW_MODEL_NAME_ACTIONABLE) -> None:
     """
     Transition the latest model from the `current_stage` to the
     `new_stage` and archive the existing model in `new_stage`
@@ -106,20 +111,20 @@ def mlflow_transition_model(current_stage: str, new_stage: str) -> None:
 
     client = MlflowClient()
 
-    version = client.get_latest_versions(name=MLFLOW_MODEL_NAME, stages=[current_stage])
+    version = client.get_latest_versions(name=model_name, stages=[current_stage])
 
     if not version:
-        print(f"\n❌ No model found with name {MLFLOW_MODEL_NAME} in stage {current_stage}")
+        print(f"\n❌ No model found with name {model_name} in stage {current_stage}")
         return None
 
     client.transition_model_version_stage(
-        name=MLFLOW_MODEL_NAME,
+        name=model_name,
         version=version[0].version,
         stage=new_stage,
         archive_existing_versions=True
     )
 
-    print(f"✅ Model {MLFLOW_MODEL_NAME} (version {version[0].version}) transitioned from {current_stage} to {new_stage}")
+    print(f"✅ Model {model_name} (version {version[0].version}) transitioned from {current_stage} to {new_stage}")
 
     return None
 
