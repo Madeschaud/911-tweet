@@ -15,19 +15,17 @@ from tweet_911.Model.utils import split_data, tokenize_data, pad_data
 def initialize_model(vocab_size, embedding_dim=50):
     model = Sequential()
     model.add(Embedding(input_dim=vocab_size+1, output_dim=100, mask_zero=True))
-    model.add(GRU(units=256, activation='tanh',return_sequences=True))
-    model.add(GRU(units=128, activation='tanh',return_sequences=True))
-    model.add(GRU(units=64, activation='tanh',return_sequences=True))
-    model.add(GRU(units=32, activation='tanh'))
-    model.add(Dense(1024, activation='relu'))
-    model.add(Dropout(rate=0.2))
-    model.add(Dense(256, activation='relu'))
-    model.add(Dropout(rate=0.2))
+    model.add(GRU(units=32, activation='tanh',return_sequences=True))
+    model.add(GRU(units=16, activation='tanh',return_sequences=True))
+    model.add(GRU(units=16, activation='tanh'))
+    model.add(Dense(32, activation='relu'))
+    model.add(Dense(16, activation='relu'))
+    model.add(Dropout(0.2))
     model.add(Dense(1, activation='sigmoid'))
 
     model.compile(
             loss='binary_crossentropy',
-            optimizer='adam',
+            optimizer='rmsprop',
             metrics=['accuracy', 'Recall', 'Precision']
     )
 

@@ -83,10 +83,10 @@ def train(
         print(Fore.MAGENTA + f'{MLFLOW_EXPERIMENT} initialized' + Fore.MAGENTA)
 
     print(Fore.YELLOW + f'{MLFLOW_EXPERIMENT} is training' + Fore.YELLOW)
-    es = EarlyStopping(patience=patience, restore_best_weights=True, monitor='val_precision')
+    es = EarlyStopping(patience=patience, restore_best_weights=True, monitor='val_precision', mode='max')
 
     checkpoint_path = os.path.join(f'Data/checkpoint/{MLFLOW_MODEL_NAME}-model-{MLFLOW_EXPERIMENT}','-{epoch:02d}-{val_accuracy:.2f}.hdf5')
-    check = ModelCheckpoint(checkpoint_path, verbose=1, save_best_only=True, monitor='val_precision')
+    check = ModelCheckpoint(checkpoint_path, verbose=1, save_best_only=True, monitor='val_precision', mode='max')
     epochs = 100
     history = model.fit(
         X_train_pad, y_train,
@@ -155,7 +155,7 @@ def evaluate(
     )
 
     save_results(params=params, metrics=metrics_dict)
-
+    print(model.summary())
     print("✅ evaluate() done \n")
 
 
