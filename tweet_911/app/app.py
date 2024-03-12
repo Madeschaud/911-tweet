@@ -21,10 +21,22 @@ st.markdown("""
         }
         .css-q3bdcp { width: 100%; }
         button  {
-            color:#1DA1F2; border-color: #1DA1F2;
+            background-color:#1DA1F2 !important;
+            color:#FFFFFF !important;
+            border-color: #1DA1F2 !important;
+            width:100% !important;
+            border-radius:20px  !important;
         }
-        button::hover  {
-            color:#1DA1F2; border-color: #1DA1F2;
+        # button::hover  {
+        #     color:#1DA1F2; border-color: #1DA1F2;
+        # }
+
+        .css-5rimss p{
+            border:1px solid rgba(49, 51, 63, 0.2);;
+            border-radius:20px;
+            text-align:center;
+            padding:18px;
+
         }
 
     </style>
@@ -67,6 +79,7 @@ with col1:
     if st.session_state.stage == 0:
         st.write(st.session_state.display_tweet)
         st.button('Find if this tweet is a disaster', on_click=mark_disaster, key='button_state')
+        # st.button('Find if this tweet is a disaster', on_click=mark_disaster, key='button_state')
 
 with col2:
     st.markdown("<h1 style='text-align: center;'>Disaster<br>Tweet</h1>", unsafe_allow_html=True)
@@ -80,10 +93,5 @@ with col3:
     st.markdown('---')
     if st.session_state.stage == 2:
         st.write(st.session_state.display_tweet)
+        st.button('I want a new Tweet', on_click=next_tweet)
 
-
-st.markdown('---')
-
-_, col_middle, _ = st.columns([1,1,1])
-with col_middle:
-    st.button('I want a new Tweet', on_click=next_tweet)

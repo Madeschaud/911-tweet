@@ -1,7 +1,7 @@
 [theme]
 
-primaryColor = '#1DA1F2' # Red
+primaryColor = '#1DA1F2'
 
-backgroundColor = '#14171A' # Dark Blue
+backgroundColor = '#FFFFFF'
 
-secondaryBackgroundColor = '#A76D60' # Lighter Blue
+secondaryBackgroundColor = '#1DA1F2'
