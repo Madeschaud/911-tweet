@@ -1,81 +1,89 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
-from streamlit_folium import folium_static
-import folium
-import geopandas as gpd
-import json
+st.set_page_config(page_title="911")
+
+DATA_URL = ('../Data/presentation.csv')
 
 
+st.markdown("""
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap')
 
-st.title('First Responder Action Prioritization')
+        .css-b3z5c9 { width: 100%; }
+        .css-1y4p8pa { max-width:70%}
+        # .css-11orhzd {margin-top:100px}
+        #MainMenu {visibility: hidden; }
+        footer {visibility: hidden;}
+        .css-10trblm {
+            color:#1DA1F2;
+        font-family: "Noto Sans", sans-serif;
 
-# DATE_COLUMN = 'tweet_text', 'class_label','disaster_type','disaster_year','country'
-DATA_URL = ('../Data/clean_data.csv')
+        }
+        .css-q3bdcp { width: 100%; }
+        button  {
+            color:#1DA1F2; border-color: #1DA1F2;
+        }
+        button::hover  {
+            color:#1DA1F2; border-color: #1DA1F2;
+        }
+
+    </style>
+    """, unsafe_allow_html=True)
+
 
 @st.cache_data
 def load_data(nrows):
     data = pd.read_csv(DATA_URL, nrows=nrows)
-    # return data[['tweet_text', 'class_label','disaster_type','disaster_year','country']]
-    return data[['tweet_text', 'actionable', 'country']]
+    return data[['tweet_text', 'class_label', 'disaster_year', 'place', 'disaster_type', 'disaster', 'actionable']]
 
-# data_load_state = st.sidebar.text('Loading data...')
-data = load_data(10000)
-# data_load_state.text("Data loaded!")
+data = load_data(200)
 
-# if st.checkbox('Show raw data', key='show_data'):
-#     st.subheader('Raw data')
-#     st.write(data)
+if 'current_index' not in st.session_state:
+    st.session_state.current_index = 0
+    st.session_state.stage = 0  # 0: Initial, 1: Disaster, 2: Actionable
+    st.session_state.display_tweet = data.iloc[0]['tweet_text']
 
-countries_to_highlight = []
-st.sidebar.header("Choose the places you want to go in prio:")
+def next_tweet():
+    if st.session_state.current_index < len(data) - 1:
+        st.session_state.current_index += 1
+    else:
+        st.session_state.current_index = 0
+    st.session_state.display_tweet = data.iloc[st.session_state.current_index]['tweet_text']
+    st.session_state.stage = 0
 
-for index, event in data.head(20).iterrows():
-    tweet_text = event['tweet_text']
-    actionable = event['actionable']
+def mark_disaster():
+    st.session_state.stage = 1
 
-    if actionable:  # Check if the event is actionable
-        st.sidebar.markdown('---')
-        st.sidebar.write(tweet_text)
-        take_key = f"take_{index}"
-        take = st.sidebar.checkbox('I take it', key=take_key)
-        if take:
-            countries_to_highlight = event['country']
-            if countries_to_highlight.find(', '):
-                countries_to_highlight = countries_to_highlight.split(', ')
-            # st.markdown('---')
-            # st.write(tweet_text)
-            # st.markdown('---')
-        # st.sidebar.markdown('---')
+def mark_actionable():
+    st.session_state.stage = 2
 
 
 
-# Load the GeoJSON file -- country boundaries
-# with open('../Data/countries_boundaries.geojson', 'r') as f:
-#     world_geojson = json.load(f)
+col1, col2, col3 = st.columns([1, 1, 1], gap="small")
+
+with col1:
+    st.markdown("<h1 style='text-align: center;'>All the<br>tweets</h1>", unsafe_allow_html=True)
+    st.markdown('---')
+    if st.session_state.stage == 0:
+        st.write(st.session_state.display_tweet)
+        st.button('Find if this tweet is a disaster', on_click=mark_disaster, key='button_state')
+
+with col2:
+    st.markdown("<h1 style='text-align: center;'>Disaster<br>Tweet</h1>", unsafe_allow_html=True)
+    st.markdown('---')
+    if st.session_state.stage == 1:
+        st.write(st.session_state.display_tweet)
+        st.button('Is this tweet actionable?', on_click=mark_actionable)
+
+with col3:
+    st.markdown("<h1 style='text-align: center;'>Actionable<br>Tweet</h1>", unsafe_allow_html=True)
+    st.markdown('---')
+    if st.session_state.stage == 2:
+        st.write(st.session_state.display_tweet)
 
 
+st.markdown('---')
 
-# def style_function(feature):
-#     if feature['properties']['NAME'] in countries_to_highlight:
-#         return {
-#             'fillColor': '#ffaf00',
-#             'color': 'black',
-#             'weight': 1.5,
-#             'fillOpacity': 0.5
-#         }
-#     return {
-#         'fillColor': '#fafafa',
-#         'color': 'black',
-#         'weight': 0.5,
-#         'fillOpacity': 0.1
-#     }
-
-# m = folium.Map(location=[20, 0], zoom_start=2.3)
-
-# folium.GeoJson(
-#     world_geojson,
-#     style_function=style_function
-# ).add_to(m)
-
-# folium_static(m)
+_, col_middle, _ = st.columns([1,1,1])
+with col_middle:
+    st.button('I want a new Tweet', on_click=next_tweet)
