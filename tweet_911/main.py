@@ -86,7 +86,7 @@ def train(
     es = EarlyStopping(patience=patience, restore_best_weights=True, monitor='val_precision')
 
     checkpoint_path = os.path.join(f'Data/checkpoint/{MLFLOW_MODEL_NAME}-model-{MLFLOW_EXPERIMENT}','-{epoch:02d}-{val_accuracy:.2f}.hdf5')
-    check = ModelCheckpoint(checkpoint_path, verbose=1, save_best_only=True, monitor='val_precision')
+    check = ModelCheckpoint(checkpoint_path, verbose=1, save_best_only=True, monitor='val_precision', mode='max')
     epochs = 100
     history = model.fit(
         X_train_pad, y_train,

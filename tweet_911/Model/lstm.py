@@ -42,13 +42,13 @@ def initialize_model(vocab_size, embedding_dim=50):
     model.add(Dense(1, activation='sigmoid'))
 
     #lstm small -- natural-disaster-tweet_jbach_lstm_small local
-    # model.add(LSTM(units=32, return_sequences=True, activation= 'tanh'))
-    # model.add(LSTM(16, return_sequences=True))
-    # model.add(LSTM(8, activation='tanh'))
-    # model.add(Dense(32, activation='relu'))
-    # model.add(Dropout(0.2))
-    # model.add(Dense(16, activation='relu'))
-    # model.add(Dense(1, activation='sigmoid'))
+    #model.add(LSTM(units=32, return_sequences=True, activation= 'tanh'))
+    #model.add(LSTM(16, return_sequences=True))
+    #model.add(LSTM(8, activation='tanh'))
+    #model.add(Dense(32, activation='relu'))
+    #model.add(Dropout(0.2))
+    #model.add(Dense(16, activation='relu'))
+    #model.add(Dense(1, activation='sigmoid'))
 
     #compile
     model.compile(loss='binary_crossentropy', optimizer= 'rmsprop', metrics= ['accuracy', 'Recall', 'Precision'])
