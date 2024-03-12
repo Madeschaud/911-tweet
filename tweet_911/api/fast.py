@@ -29,6 +29,7 @@ app.add_middleware(
 # This will prove very useful for the Demo Day
 app.state.model = load_model('Staging')
 print(type(app.state.model))
+data = pd.read_csv('tweet_911/Data/presentation.csv')
 # def padding_tweet(tweet):
 #     tokenizer = Tokenizer()
 #     tokenizer.fit_on_texts([tweet])
@@ -42,7 +43,7 @@ def api_predict_disaster(
         tweet: str,  # Tweet we want to predict
     ):
     """
-    Make a tweet prediction.
+    Make a tweet prediction disaster.
     """
 
     model = app.state.model[0]
@@ -58,18 +59,19 @@ def api_predict_disaster(
     print(X_tweet_pad)
 
     y_pred = model.predict(X_tweet_pad)
+    print(data)
     # print(y_pred)
     # # ⚠️ fastapi only accepts simple Python data types as a return value
     # # among them dict, list, str, int, float, bool
     # # in order to be able to convert the api response to JSON
+
     return dict(tweet_accurate=float(y_pred))
-    # $CHA_END
 
 def api_predict_actionable(
         tweet: str,  # Tweet we want to predict
     ):
     """
-    Make a tweet prediction.
+    Make a tweet prediction actionable.
     """
 
     model = app.state.model[1]
@@ -93,7 +95,5 @@ def api_predict_actionable(
 
 @app.get("/")
 def root():
-    # $CHA_BEGIN
     return dict(greeting="Hello")
-    # $CHA_END
 print(api_predict_actionable('yes hailing right shit getting real'))
