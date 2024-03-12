@@ -58,5 +58,3 @@ def model_cnn():
 
     y_pred = model.predict(X_test_pad) # Make cross validated predictions of entire dataset
     print(classification_report(y_test,(y_pred > 0.5).astype(int))) # Pass predictions and true values to Classification report
-
-    #save_model()
