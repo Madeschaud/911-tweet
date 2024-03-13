@@ -79,15 +79,27 @@ def load_model(stage="Production") -> keras.Model:
         mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
         client = MlflowClient()
         try:
-            model_version=client.get_latest_versions(name=MLFLOW_MODEL_NAME, stages=[stage])
-            model_uri= model_version[0].source
-            assert model_uri is not None
+            model_version_disaster=client.get_latest_versions(name=MLFLOW_MODEL_NAME_DISASTER, stages=[stage])
+            model_version_actionable=client.get_latest_versions(name=MLFLOW_MODEL_NAME_ACTIONABLE, stages=[stage])
+            model_uri_disaster= model_version_disaster[0].source
+            model_uri_actionable= model_version_actionable[0].source
+            assert model_uri_disaster is not None or model_uri_actionable is not None
         except:
-            print(f"No model named {MLFLOW_MODEL_NAME} found in stage {stage}")
+            print(f"No model1 named {MLFLOW_MODEL_NAME_DISASTER} found in stage {stage}")
+            print(f"or No model_actionable named {MLFLOW_MODEL_NAME_ACTIONABLE} found in stage {stage}")
+
+
             return None
+<<<<<<< HEAD
         model = mlflow.tensorflow.load_model(model_uri=model_uri)
         print(Fore.MAGENTA + f"\nModel loaded from MLflow!" + Style.RESET_ALL)
         return model
+=======
+        model_disaster = mlflow.tensorflow.load_model(model_uri=model_uri_disaster)
+        model_actionable = mlflow.tensorflow.load_model(model_uri=model_uri_actionable)
+        # print()
+        return model_disaster, model_actionable
+>>>>>>> 69be8496257e73100f06e026f1bdae4198f50a10
 
     else:
         return None

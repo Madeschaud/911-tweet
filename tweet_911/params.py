@@ -8,6 +8,9 @@ MODEL_TARGET = os.environ.get("MODEL_TARGET")
 LOCAL_REGISTRY_PATH =  os.path.join(os.path.expanduser('~'), ".lewagon", "911-tweet", "training_outputs")
 
 # Nom du modèle sur MLFLOW
+MLFLOW_MODEL_NAME_DISASTER = os.environ.get("MLFLOW_MODEL_NAME_DISASTER")
+MLFLOW_MODEL_NAME_ACTIONABLE= os.environ.get("MLFLOW_MODEL_NAME_ACTIONABLE")
+
 MLFLOW_MODEL_NAME = os.environ.get("MLFLOW_MODEL_NAME")
 MLFLOW_TRACKING_URI = os.environ.get("MLFLOW_TRACKING_URI")
 MLFLOW_EXPERIMENT = os.environ.get("MLFLOW_EXPERIMENT")

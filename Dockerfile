@@ -1,4 +1,4 @@
-FROM python:3.8.12-buster
+FROM python:3.10.8-slim-bullseye
 
 # RUN apt-get update && apt-get install -y \
 #     libgdal-dev \
@@ -18,6 +18,5 @@ COPY setup.py setup.py
 RUN pip install .
 
 COPY Makefile Makefile
-RUN make reset_local_files
 
 CMD uvicorn tweet_911.api.fast:app --host 0.0.0.0 --port $PORT

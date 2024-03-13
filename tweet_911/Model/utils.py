@@ -77,7 +77,7 @@ from keras.preprocessing.text import Tokenizer
 def split_data() -> tuple:
     data=pd.read_csv('tweet_911/Data/clean_data.csv', index_col=0)
     X = data['tweet_text']
-    y = data.actionable
+    y = data.disaster_or_not
 
     # Split into Train/Test
     return train_test_split(X, y, test_size=0.3)

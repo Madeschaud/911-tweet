@@ -1,13 +1,13 @@
 nltk
 colorama
-pytest
-pylint
-ipdb
-jupyterlab
+# pytest
+# pylint
+# ipdb
+# jupyterlab
 numpy
 pandas
-matplotlib
-seaborn
+# matplotlib
+# seaborn
 scikit-learn
 
 
@@ -19,21 +19,21 @@ tensorflow==2.10.0; sys_platform != 'darwin' # Windows & Ubuntu Intel chips
 google-cloud-bigquery
 google-cloud-storage
 mlflow==2.1.1
-glob2
+# glob2
 keras
 
 # API
 fastapi         # API framework
-pytz            # time zone management
+# pytz            # time zone management
 uvicorn         # web server
 
 # tests
-httpx           # HTTP client
-pytest-asyncio  # asynchronous I/O support for pytest
+# httpx           # HTTP client
+# pytest-asyncio  # asynchronous I/O support for pytest
 
 
 #application
 streamlit
 requests
-streamlit_folium
+# streamlit_folium
 # geopandas
