@@ -90,16 +90,10 @@ def load_model(stage="Production") -> keras.Model:
 
 
             return None
-<<<<<<< HEAD
-        model = mlflow.tensorflow.load_model(model_uri=model_uri)
-        print(Fore.MAGENTA + f"\nModel loaded from MLflow!" + Style.RESET_ALL)
-        return model
-=======
         model_disaster = mlflow.tensorflow.load_model(model_uri=model_uri_disaster)
         model_actionable = mlflow.tensorflow.load_model(model_uri=model_uri_actionable)
         # print()
         return model_disaster, model_actionable
->>>>>>> 69be8496257e73100f06e026f1bdae4198f50a10
 
     else:
         return None
