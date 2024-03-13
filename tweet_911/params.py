@@ -15,6 +15,8 @@ MLFLOW_MODEL_NAME = os.environ.get("MLFLOW_MODEL_NAME")
 MLFLOW_TRACKING_URI = os.environ.get("MLFLOW_TRACKING_URI")
 MLFLOW_EXPERIMENT = os.environ.get("MLFLOW_EXPERIMENT")
 
+URL_API = os.environ.get("URL_API")
+
 BUCKET_NAME = os.environ.get("BUCKET_NAME")
 GCP_PROJECT = os.environ.get("GCP_PROJECT")
 GCP_REGION = os.environ.get("GCP_REGION")

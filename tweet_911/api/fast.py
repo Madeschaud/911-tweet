@@ -62,7 +62,7 @@ def api_predict_disaster(
     # # ⚠️ fastapi only accepts simple Python data types as a return value
     # # among them dict, list, str, int, float, bool
     # # in order to be able to convert the api response to JSON
-    return dict(tweet_accurate=float(y_pred))
+    return dict(tweet_disaster=float(y_pred))
     # $CHA_END
 
 @app.get("/predict_actionable")
@@ -90,7 +90,7 @@ def api_predict_actionable(
     # # ⚠️ fastapi only accepts simple Python data types as a return value
     # # among them dict, list, str, int, float, bool
     # # in order to be able to convert the api response to JSON
-    return dict(tweet_accurate=float(y_pred))
+    return dict(tweet_actionable=float(y_pred))
     # $CHA_END
 
 

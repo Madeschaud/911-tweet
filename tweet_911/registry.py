@@ -84,6 +84,8 @@ def load_model(stage="Production") -> keras.Model:
             model_version_actionable=client.get_latest_versions(name=MLFLOW_MODEL_NAME_ACTIONABLE, stages=[stage])
             model_uri_disaster= model_version_disaster[0].source
             model_uri_actionable= model_version_actionable[0].source
+            # print(model_uri_disaster)
+            # print(model_uri_actionable)
             assert model_uri_disaster is not None or model_uri_actionable is not None
         except:
             print(f"No model1 named {MLFLOW_MODEL_NAME_DISASTER} found in stage {stage}")
@@ -91,6 +93,7 @@ def load_model(stage="Production") -> keras.Model:
 
 
             return None
+
         model_disaster = mlflow.tensorflow.load_model(model_uri=model_uri_disaster)
         model_actionable = mlflow.tensorflow.load_model(model_uri=model_uri_actionable)
         # print()

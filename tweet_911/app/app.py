@@ -1,5 +1,8 @@
 import streamlit as st
 import pandas as pd
+import requests
+from tweet_911.params import URL_API
+
 st.set_page_config(page_title="911")
 
 DATA_URL = ('../Data/presentation.csv')
@@ -54,6 +57,7 @@ if 'current_index' not in st.session_state:
     st.session_state.current_index = 0
     st.session_state.stage = 0  # 0: Initial, 1: Disaster, 2: Actionable
     st.session_state.display_tweet = data.iloc[0]['tweet_text']
+    params = { 'tweet': st.session_state.display_tweet }
 
 def next_tweet():
     if st.session_state.current_index < len(data) - 1:
@@ -65,6 +69,12 @@ def next_tweet():
 
 def mark_disaster():
     st.session_state.stage = 1
+    response = requests.get(f'{URL_API}', params)
+    prediction = response.json()
+    st.write(prediction)
+    # pred = prediction['tweet_accurate']
+    # return round(pred, 2)
+    return None
 
 def mark_actionable():
     st.session_state.stage = 2
@@ -78,7 +88,8 @@ with col1:
     st.markdown('---')
     if st.session_state.stage == 0:
         st.write(st.session_state.display_tweet)
-        st.button('Find if this tweet is a disaster', on_click=mark_disaster, key='button_state')
+        pred = st.button('Find if this tweet is a disaster', on_click=mark_disaster, key='button_state')
+        st.write(pred)
         # st.button('Find if this tweet is a disaster', on_click=mark_disaster, key='button_state')
 
 with col2:
@@ -94,4 +105,3 @@ with col3:
     if st.session_state.stage == 2:
         st.write(st.session_state.display_tweet)
         st.button('I want a new Tweet', on_click=next_tweet)
-
