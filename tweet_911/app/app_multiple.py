@@ -65,7 +65,7 @@ st.markdown("""
             background-color:white;
         }
 
-        .e16nr0p24 hr{
+        .e16nr0p34 hr{
             background-color:rgba(49, 51, 63, 0.2);
         }
 
