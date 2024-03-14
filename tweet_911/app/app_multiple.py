@@ -1,21 +1,10 @@
 import streamlit as st
 import pandas as pd
 import requests
-from streamlit_gsheets import GSheetsConnection
 
-
+URL = 'presentation.csv'
 
 st.set_page_config(page_title="911")
-
-# Create a connection object.
-conn = st.connection("gsheets", type=GSheetsConnection)
-
-df = conn.read()
-
-# Print results.
-for row in df.itertuples():
-    st.write(f"{row.name} has a :{row.pet}:")
-
 
 st.markdown("""
     <style>
