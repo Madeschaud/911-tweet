@@ -53,11 +53,11 @@ st.markdown("""
             border-radius:20px;
             text-align:center;
             padding:18px;
-            color:#1DA1F2;
+            color:white;
         }
-        #  .stMarkdown .css-1offfwp p a{
-        #     color:#1DA1F2;
-        # }
+        .stMarkdown .e16nr0p34 p a{
+            color:white;
+        }
 
         .css-6qob1r{
             background-color:#1DA1F2
