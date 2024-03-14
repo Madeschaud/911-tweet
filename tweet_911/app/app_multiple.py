@@ -98,7 +98,6 @@ def mark_disaster():
             col1.write(st.session_state.display_tweet.iloc[index])
             st.session_state.new_tweets.append(st.session_state.display_tweet.iloc[index])
     st.session_state.stage = 1
-    # st.rerun()
 
 
 def mark_actionable():
@@ -111,6 +110,8 @@ def mark_actionable():
         if round(pred, 2) > 0.3:
             col2.write(st.session_state.new_tweets[index])
     st.session_state.stage = 2
+    st.switch_page("pages/experience.py")
+
 
 
 col1, col2 = st.columns([1, 1], gap="small")
