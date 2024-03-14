@@ -1,0 +1,23 @@
+tweet_id,tweet_text,class_label,disaster_year,place,disaster_type,disaster,actionable
+831,Tornado Kills 89 in Missouri. http://t.co/KhJUnPE,injured_or_dead_people,2011,joplin,tornado,1,1
+906,"RT @ABCWorldNews: MORE: Three people shot, suspect in custody in Los Angeles airport shooting http://t.co/6Y6SOtBdiy",affected_individual,2013,LA,shooting,1,1
+738,RT @UNOCHA: #TCPam - 1 of strongest storms in Sth Pacific in years - left trail of destruction in #Vanuatu (Photos:@UNICEF) http://t.co/qs1‰Û_,infrastructure_and_utilities_damage,2015,vanuatu,cyclone,1,1
+1293,#BBC - Homes destroyed in Colorado fire http://t.co/PGChQTJp,infrastructure_and_utilities_damage,2012,colorado,wildfire,1,1
+117482,I can't think of what must be the condition of the people in Nepal....my prayers are with them #EarthquakeinUP #NepalEarthquake,not_humanitarian,2015,nepal,earthquake,1,0
+117431,RT @dost_pagasa: SEVERE WEATHER BULLETIN FOR: TYPHOON â€œ#RubyPHâ€(HAGUPIT) TROPICAL CYCLONE WARNING  WEATHER BULLETIN NUMBER TWELVE... http:/â€¦,caution_and_advice,2014,philippines,typhon,1,0
+117458,"SCARY! @twilightus @AngWxGrl Terrifying!!!  @AngWxGrl #Joplin, MO: Before & After: http://tinyurl.com/4x8rsmt #tornado",caution_and_advice,2011,joplin,tornado,1,0
+117493,TTW Today's News: Australia steps up aid to Vanuatu as 'widespread devastation' becomes clear http://t.co/MTh1XDfr6w,donation_and_volunteering,2015,vanuatu,cyclone,1,0
+117549,Why are we all donating money to the Boston Marathon Fund instead of the 15 families of people that died in the Texas Fertilizer explosion?,donation_and_volunteering,2013,west-texas,explosion,1,0
+117222,"#Earthquake Shifts #Kathmandu by 3 Metres But #Everest Height Unchanged, Say Experts look out for more informations http://t.co/7C1076h75K",not_humanitarian,2015,nepal,earthquake,1,0
+117190,"Indian, Pakistani troops aid flood-stranded people http://t.co/kQg0xvt3a4 #tcot",donation_and_volunteering,2014,pakistan,floods,1,0
+69008,Got out of work early....at legends for a while   happy birthday FRAN   --Ian,NA,NA,NA,NA,0,0
+82908,"@vampire_rogue I'd hang out with you, but my private jet's in the shop. ",NA,NA,NA,NA,0,0
+116375,Loves Sunday morning lie-ins ,NA,NA,NA,NA,0,0
+106093,@Lizzy_Louise i wish i was  drink up girls ;) lol,NA,NA,NA,NA,0,0
+32485,Thinking some &quot;kids&quot; are having just a little too much fun...and loving them grunches anyway!     @aliced217  @bostonstimmyv,NA,NA,NA,NA,0,0
+31459,"GreaterLansingWelcome back party for the Spartans! Breslin Center, 10:45 this morning! Team arrives about 11:15 a.m. Wish I could go ",NA,NA,NA,NA,0,0
+57019,"@Dannymcfly   duuuuuuuude, you were perfect acting at Faustão. yes i watched you 4 ",NA,NA,NA,NA,0,0
+22781,"@katyperry ferras is like the hottest man EVER! UGH, so out of my league ",NA,NA,NA,NA,0,0
+37751,@sofdlovesbsb i've never heard fourplay ,NA,NA,NA,NA,0,0
+43628,Tetris is 25 years old today??? well waddaya know??? I love Tetris!! ,NA,NA,NA,NA,0,0
+110740,no more dear Sunny. LIfe is so bleak. Poor old me. ,NA,NA,NA,NA,0,0

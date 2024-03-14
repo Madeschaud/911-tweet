@@ -4,7 +4,7 @@ import requests
 
 st.set_page_config(page_title="911")
 
-DATA_URL = ('../Data/presentation.csv')
+DATA_URL = ('presentation.csv')
 
 st.markdown("""
     <style>
