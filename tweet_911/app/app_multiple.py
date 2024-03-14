@@ -12,17 +12,11 @@ st.markdown("""
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap')
 
-        .css-b3z5c9 { width: 100%; }
-        .css-1y4p8pa { max-width:70%}
+        # .css-b3z5c9 { width: 100%; }
+        # .css-1y4p8pa { max-width:70%}
         footer {visibility: hidden;}
-        .css-10trblm {
-            color:#1DA1F2;
-            font-family: "Noto Sans", sans-serif;
-        }
-        # h1 {
-        #     color:#FFF;
-        #     font-size:44px !important;
-        #     font-weight:700 !important;
+        # .css-10trblm {
+        #     color:#1DA1F2;
         #     font-family: "Noto Sans", sans-serif;
         # }
         .css-q3bdcp { width: 100%; }
@@ -53,20 +47,20 @@ st.markdown("""
              color:white;
         }
 
-        .stMarkdown .css-1offfwp p{
-            border:1px solid rgba(49, 51, 63, 0.2);
-            border-radius:20px;
-            text-align:center;
-            padding:18px;
-            color:#1DA1F2;
-        }
-         .stMarkdown .css-1offfwp p a{
-            color:#1DA1F2;
-        }
+        # .stMarkdown .css-1offfwp p{
+        #     border:1px solid rgba(49, 51, 63, 0.2);
+        #     border-radius:20px;
+        #     text-align:center;
+        #     padding:18px;
+        #     color:#1DA1F2;
+        # }
+        #  .stMarkdown .css-1offfwp p a{
+        #     color:#1DA1F2;
+        # }
 
-        .css-6qob1r{
-            background-color:#1DA1F2
-        }
+        # .css-6qob1r{
+        #     background-color:#1DA1F2
+        # }
 
 
     </style>
