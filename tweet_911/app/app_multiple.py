@@ -70,7 +70,11 @@ st.markdown("""
         }
         .e1fqkh3o10{
             display:none;
+        }
+
+        .e1tzin5v0{
             padding-top: 6rem;
+
         }
 
 
