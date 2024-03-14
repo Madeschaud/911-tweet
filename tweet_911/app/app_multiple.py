@@ -61,7 +61,7 @@ st.markdown("""
         .css-6qob1r{
             background-color:#1DA1F2
         }
-        .css-uf99v8{
+        .css-uf99v8, header{
             background-color:white;
         }
 
