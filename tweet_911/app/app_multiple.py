@@ -36,15 +36,15 @@ st.markdown("""
             padding-bottom:0px;
         }
 
-        .css-1kbbaad .css-5rimss p{
-            border:1px solid rgba(49, 51, 63, 0.2)  !important;
-            border-radius:20px;
-            text-align:center;
-            padding:18px;
-            color:white;
-        }
-         .css-1kbbaad .css-5rimss p a{
-             color:white;
+        # .css-1kbbaad .css-5rimss p{
+        #     border:1px solid rgba(49, 51, 63, 0.2)  !important;
+        #     border-radius:20px;
+        #     text-align:center;
+        #     padding:18px;
+        #     color:white;
+        # }
+        #  .css-1kbbaad .css-5rimss p a{
+        #      color:white;
         }
 
         # .stMarkdown .css-1offfwp p{
