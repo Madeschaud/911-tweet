@@ -109,7 +109,7 @@ def mark_disaster():
 
 def mark_actionable():
     for index in range(0, len(st.session_state.new_tweets)):
-        print(st.session_state.new_tweets[index])
+        st.write(st.session_state.new_tweets[index])
         response = requests.get(f'{URL_API}/predict_actionable', { 'tweet': st.session_state.new_tweets[index] })
         # if response:
         prediction = response.json()
