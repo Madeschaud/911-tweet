@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import requests
 
-DATA_URL = 'data/presentation.csv'
+DATA_URL = 'data_streamlit/presentation.csv'
 
 st.set_page_config(page_title="911")
 
