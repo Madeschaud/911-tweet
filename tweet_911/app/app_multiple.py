@@ -81,7 +81,7 @@ if 'display_tweet' not in st.session_state:
 
 def mark_disaster():
     for index in range(0, len(st.session_state.display_tweet)):
-        response = requests.get(f'{st.secrets['URL_API']}/predict_disaster', { 'tweet': st.session_state.display_tweet.iloc[index] })
+        response = requests.get(f'{st.secrets.url_api.URL_API}/predict_disaster', { 'tweet': st.session_state.display_tweet.iloc[index] })
         prediction = response.json()
         pred = prediction['tweet_accurate']
         print(pred)
@@ -95,7 +95,7 @@ def mark_disaster():
 def mark_actionable():
     print(st.session_state.new_tweets)
     for index in range(0, len(st.session_state.new_tweets)):
-        response = requests.get(f'{st.secrets['URL_API']}/predict_actionable', { 'tweet': st.session_state.new_tweets[index] })
+        response = requests.get(f'{st.secrets.url_api.URL_API}/predict_actionable', { 'tweet': st.session_state.new_tweets[index] })
         prediction = response.json()
         pred = prediction['tweet_accurate']
         print(pred)
