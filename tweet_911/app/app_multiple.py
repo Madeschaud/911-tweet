@@ -47,7 +47,7 @@ st.markdown("""
             color:white;
         }
 
-        .e1tzin5v0 .stMarkdown .e16nr0p34 p{
+        .egzxvld4 .e1tzin5v0 .stMarkdown .e16nr0p34 p{
             border:1px solid rgba(49, 51, 63, 0.2);
             border-radius:20px;
             text-align:center;
