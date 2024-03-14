@@ -48,7 +48,7 @@ st.markdown("""
              color:white;
         }
 
-        .css-1p1nwyz p{
+        .css-1p1nwyz{
             border:1px solid rgba(49, 51, 63, 0.2);
             border-radius:20px;
             text-align:center;
