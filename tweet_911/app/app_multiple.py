@@ -52,10 +52,10 @@ st.markdown("""
             border-radius:20px;
             text-align:center;
             padding:18px;
-            color:rgba(49, 51, 63, 0.2);
+            color:#1DA1F2;
         }
         .e1tzin5v1 .e1tzin5v0  .stMarkdown .e16nr0p34 p a{
-            color:rgba(49, 51, 63, 0.2);
+            color:#1DA1F2;
         }
 
         .css-6qob1r{
