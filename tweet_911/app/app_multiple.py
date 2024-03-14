@@ -118,6 +118,8 @@ def mark_actionable():
         # if round(pred, 2) > 0.3:
         #     col1.write(st.session_state.display_tweet.iloc[index])
         #     st.session_state.new_tweets.append(st.session_state.display_tweet.iloc[index])
+
+        st.write(f'{URL_API}/predict_actionable', { 'tweet': st.session_state.new_tweets[index] })
         response = requests.get(f'{URL_API}/predict_actionable', { 'tweet': st.session_state.new_tweets[index] })
         # if response:
         prediction = response.json()
