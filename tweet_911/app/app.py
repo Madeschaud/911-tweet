@@ -19,7 +19,8 @@ st.markdown("""
         footer {visibility: hidden;}
         .css-10trblm {
             color:#1DA1F2;
-        font-family: "Noto Sans", sans-serif;
+            font-family: "Noto Sans", sans-serif;
+            position: sticky;
 
         }
         .css-q3bdcp { width: 100%; }
@@ -39,9 +40,7 @@ st.markdown("""
             border-radius:20px;
             text-align:center;
             padding:18px;
-
         }
-
     </style>
     """, unsafe_allow_html=True)
 
@@ -57,7 +56,7 @@ if 'current_index' not in st.session_state:
     st.session_state.current_index = 0
     st.session_state.stage = 0  # 0: Initial, 1: Disaster, 2: Actionable
     st.session_state.display_tweet = data.iloc[0]['tweet_text']
-    params = { 'tweet': st.session_state.display_tweet }
+    st.session_state.params = { 'tweet': st.session_state.display_tweet }
 
 def next_tweet():
     if st.session_state.current_index < len(data) - 1:
@@ -66,18 +65,25 @@ def next_tweet():
         st.session_state.current_index = 0
     st.session_state.display_tweet = data.iloc[st.session_state.current_index]['tweet_text']
     st.session_state.stage = 0
+    st.session_state.params = { 'tweet': st.session_state.display_tweet }
 
 def mark_disaster():
-    st.session_state.stage = 1
-    response = requests.get(f'{URL_API}', params)
+    response = requests.get(f'{URL_API}/predict_disaster', st.session_state.params)
     prediction = response.json()
-    st.write(prediction)
-    # pred = prediction['tweet_accurate']
-    # return round(pred, 2)
-    return None
+    pred = prediction['tweet_accurate']
+    if round(pred, 2) > 0.3:
+        st.session_state.stage = 1
+    else:
+        next_tweet()
 
 def mark_actionable():
-    st.session_state.stage = 2
+    response = requests.get(f'{URL_API}/predict_disaster', st.session_state.params)
+    prediction = response.json()
+    pred = prediction['tweet_accurate']
+    if round(pred, 2) > 0.3:
+        st.session_state.stage = 2
+    else:
+        next_tweet()
 
 
 
@@ -88,8 +94,7 @@ with col1:
     st.markdown('---')
     if st.session_state.stage == 0:
         st.write(st.session_state.display_tweet)
-        pred = st.button('Find if this tweet is a disaster', on_click=mark_disaster, key='button_state')
-        st.write(pred)
+        st.button('Find if this tweet is a disaster', on_click=mark_disaster, key='button_state')
         # st.button('Find if this tweet is a disaster', on_click=mark_disaster, key='button_state')
 
 with col2:

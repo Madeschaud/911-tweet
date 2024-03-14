@@ -94,6 +94,12 @@ def api_predict_actionable(
     # $CHA_END
 
 
+@app.get("/ping")
+def root():
+    # $CHA_BEGIN
+    return dict(greeting="Pong")
+    # $CHA_END
+
 
 @app.get("/")
 def root():
