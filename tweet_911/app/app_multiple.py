@@ -109,15 +109,11 @@ def mark_disaster():
 
 def mark_actionable():
     for index in range(0, len(st.session_state.new_tweets)):
-        st.write(st.session_state.new_tweets[index])
         response = requests.get(f'{URL_API}/predict_actionable', { 'tweet': st.session_state.new_tweets[index] })
         # if response:
-        st.write(response)
 
         prediction = response.json()
-        st.write(prediction['tweet_actionable'])
         pred = prediction['tweet_actionable']
-        st.write(pred)
         print(pred)
         if round(pred, 2) > 0.3:
             col2.write(st.session_state.new_tweets[index])
