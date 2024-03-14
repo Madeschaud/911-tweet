@@ -1,7 +1,7 @@
 tweet_id,tweet_text,class_label,disaster_year,place,disaster_type,disaster,actionable
-906,'RT @ABCWorldNews: MORE: Three people shot suspect in custody in Los Angeles airport shooting http://t.co/6Y6SOtBdiy',affected_individual,2013,LA,shooting,1,1
-117458,'SCARY! @twilightus @AngWxGrl Terrifying!!!  @AngWxGrl #Joplin MO: Before & After: http://tinyurl.com/4x8rsmt #tornado',caution_and_advice,2011,joplin,tornado,1,0
-117493,TTW Today's News: Australia steps up aid to Vanuatu as 'widespread devastation' becomes clear http://t.co/MTh1XDfr6w,donation_and_volunteering,2015,vanuatu,cyclone,1,0
-117190,'Indian Pakistani troops aid flood-stranded people #tcot',donation_and_volunteering,2014,pakistan,floods,1,0
+906,RT @ABCWorldNews: MORE: Three people shot suspect in custody in Los Angeles airport shooting,affected_individual,2013,LA,shooting,1,1
+117458,SCARY! @twilightus @AngWxGrl Terrifying!!!  @AngWxGrl #Joplin MO: Before & After #tornado,caution_and_advice,2011,joplin,tornado,1,0
+117493,TTW Today's News: Australia steps up aid to Vanuatu as 'widespread devastation' becomes clear,donation_and_volunteering,2015,vanuatu,cyclone,1,0
+117190,Indian Pakistani troops aid flood-stranded people #tcot,donation_and_volunteering,2014,pakistan,floods,1,0
 110740,coffee tastes better on Mondays don�t you think? ,NA,NA,NA,NA,0,0
 110740,So oat milk more like goat milk  ,NA,NA,NA,NA,0,0
