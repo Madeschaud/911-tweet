@@ -47,7 +47,7 @@ st.markdown("""
         #  .css-1p1nwyz .stMarkdown .css-5rimss p a{
         #      color:white;
         # }
-        .css-1p1nwyz .stMarkdown .e16nr0p34 p{
+        .stMarkdown .e16nr0p34 p{
             border:1px solid rgba(49, 51, 63, 0.2);
             border-radius:20px;
             text-align:center;
