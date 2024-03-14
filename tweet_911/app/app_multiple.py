@@ -112,7 +112,7 @@ def mark_actionable():
         st.write(st.session_state.new_tweets[index])
         response = requests.get(f'{URL_API}/predict_actionable', { 'tweet': st.session_state.new_tweets[index] })
         # if response:
-        st.write(response.json())
+        st.write(response)
 
         prediction = response.json()
         st.write(prediction['tweet_actionable'])
