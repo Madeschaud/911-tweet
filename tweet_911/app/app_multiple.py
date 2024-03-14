@@ -64,8 +64,9 @@ st.markdown("""
         .css-uf99v8, .css-1avcm0n{
             background-color:white;
         }
-        .css-90qg9c{
-            color:rgba(49, 51, 63, 0.2);
+
+        .e16nr0p24 hr{
+            background-color:rgba(49, 51, 63, 0.2);
         }
 
 
