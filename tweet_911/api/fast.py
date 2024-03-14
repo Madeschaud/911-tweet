@@ -58,12 +58,7 @@ def api_predict_disaster(
     print(X_tweet_pad)
 
     y_pred = model.predict(X_tweet_pad)
-    # print(y_pred)
-    # # ⚠️ fastapi only accepts simple Python data types as a return value
-    # # among them dict, list, str, int, float, bool
-    # # in order to be able to convert the api response to JSON
     return dict(tweet_disaster=float(y_pred))
-    # $CHA_END
 
 @app.get("/predict_actionable")
 def api_predict_actionable(
@@ -86,12 +81,7 @@ def api_predict_actionable(
     print(X_tweet_pad)
 
     y_pred = model.predict(X_tweet_pad)
-    # print(y_pred)
-    # # ⚠️ fastapi only accepts simple Python data types as a return value
-    # # among them dict, list, str, int, float, bool
-    # # in order to be able to convert the api response to JSON
     return dict(tweet_actionable=float(y_pred))
-    # $CHA_END
 
 
 @app.get("/ping")
