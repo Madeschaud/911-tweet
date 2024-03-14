@@ -118,7 +118,7 @@ def mark_actionable():
         if round(pred, 2) > 0.3:
             col2.write(st.session_state.new_tweets[index])
     st.session_state.stage = 2
-    st.switch_page("pages/experience.py")
+    # st.switch_page("pages/experience.py")
 
 
 
