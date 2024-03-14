@@ -73,7 +73,7 @@ st.markdown("""
         }
 
         .css-e3xfei{
-            padding-top: 6rem;
+            padding-top: 3rem;
 
         }
 
