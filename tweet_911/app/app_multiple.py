@@ -42,7 +42,7 @@ st.markdown("""
             padding-bottom:0px;
         }
 
-        .css-1kbbaad p{
+        .css-5rimss p{
             border:1px solid rgba(49, 51, 63, 0.2)  !important;
             border-radius:20px;
             text-align:center;
@@ -64,8 +64,8 @@ st.markdown("""
             color:#1DA1F2;
         }
 
-        .css-1avcm0n,..css-uf99v8{
-            background-color:white;
+        .css-6qob1r{
+            background-color:#1DA1F2
         }
 
 
