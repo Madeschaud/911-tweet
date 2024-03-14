@@ -4,6 +4,8 @@ import requests
 
 DATA_URL = 'tweet_911/app/data_streamlit/presentation.csv'
 
+URL_API = st.secrets['URL_API']
+
 st.set_page_config(page_title="911")
 
 st.markdown("""
@@ -82,8 +84,7 @@ if 'display_tweet' not in st.session_state:
 
 def mark_disaster():
     for index in range(0, len(st.session_state.display_tweet)):
-        print(st.secrets['URL_API'])
-        response = requests.get(f'{st.secrets['URL_API']}/predict_disaster', { 'tweet': st.session_state.display_tweet.iloc[index] })
+        response = requests.get(f'{URL_API}/predict_disaster', { 'tweet': st.session_state.display_tweet.iloc[index] })
         prediction = response.json()
         pred = prediction['tweet_accurate']
         print(pred)
