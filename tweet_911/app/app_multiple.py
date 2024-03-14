@@ -72,10 +72,10 @@ st.markdown("""
             display:none;
         }
 
-        # .e1tzin5v0{
-        #     padding-top: 6rem;
+        .css-e3xfei{
+            padding-top: 6rem;
 
-        # }
+        }
 
 
     </style>
