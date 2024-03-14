@@ -1,6 +1,6 @@
 tweet_id,tweet_text,class_label,disaster_year,place,disaster_type,disaster,actionable
 831,Tornado Kills 89 in Missouri. http://t.co/KhJUnPE,injured_or_dead_people,2011,joplin,tornado,1,1
-906,test,affected_individual,2013,LA,shooting,1,1
+906,RT @ABCWorldNews: MORE: Three people shot suspect in custody in Los Angeles airport shooting http://t.co/6Y6SOtBdiy,affected_individual,2013,LA,shooting,1,1
 738,RT @UNOCHA: #TCPam - 1 of strongest storms in Sth Pacific in years - left trail of destruction in #Vanuatu (Photos:@UNICEF) http://t.co/qs1‰Û_,infrastructure_and_utilities_damage,2015,vanuatu,cyclone,1,1
 1293,#BBC - Homes destroyed in Colorado fire http://t.co/PGChQTJp,infrastructure_and_utilities_damage,2012,colorado,wildfire,1,1
 117482,I can't think of what must be the condition of the people in Nepal....my prayers are with them #EarthquakeinUP #NepalEarthquake,not_humanitarian,2015,nepal,earthquake,1,0
