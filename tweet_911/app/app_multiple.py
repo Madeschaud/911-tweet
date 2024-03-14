@@ -64,6 +64,10 @@ st.markdown("""
             color:#1DA1F2;
         }
 
+        .css-1avcm0n,..css-uf99v8{
+            background-color:white;
+        }
+
 
     </style>
     """, unsafe_allow_html=True)
