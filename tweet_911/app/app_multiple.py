@@ -35,18 +35,7 @@ st.markdown("""
         .css-1y4p8pa{
             padding-bottom:0px;
         }
-        # .css-1p1nwyz .css-5rimss p
-        # .css-90qg9c .css-5rimss p
-        # .css-90qg9c{
-        #     border:1px solid rgba(49, 51, 63, 0.2)  !important;
-        #     border-radius:20px;
-        #     text-align:center;
-        #     padding:18px;
-        #     color:white;
-        # }
-        #  .css-1p1nwyz .stMarkdown .css-5rimss p a{
-        #      color:white;
-        # }
+
         .stMarkdown .e16nr0p34 p{
             border:1px solid rgba(49, 51, 63, 0.2);
             border-radius:20px;
@@ -56,6 +45,17 @@ st.markdown("""
         }
         .stMarkdown .e16nr0p34 p a{
             color:white;
+        }
+
+        .e1tzin5v0 .stMarkdown .e16nr0p34 p{
+            border:1px solid rgba(49, 51, 63, 0.2);
+            border-radius:20px;
+            text-align:center;
+            padding:18px;
+            color:black;
+        }
+        .e1tzin5v0 .stMarkdown .e16nr0p34 p a{
+            color:black;
         }
 
         .css-6qob1r{
