@@ -37,27 +37,27 @@ st.markdown("""
         }
         # .css-1p1nwyz .css-5rimss p
         # .css-90qg9c .css-5rimss p
-        .css-90qg9c{
-            border:1px solid rgba(49, 51, 63, 0.2)  !important;
-            border-radius:20px;
-            text-align:center;
-            padding:18px;
-            color:white;
-        }
-         .css-1p1nwyz .stMarkdown .css-5rimss p a{
-             color:white;
-        }
+        # .css-90qg9c{
+        #     border:1px solid rgba(49, 51, 63, 0.2)  !important;
+        #     border-radius:20px;
+        #     text-align:center;
+        #     padding:18px;
+        #     color:white;
+        # }
+        #  .css-1p1nwyz .stMarkdown .css-5rimss p a{
+        #      color:white;
+        # }
 
-        .css-1p1nwyz{
-            border:1px solid rgba(49, 51, 63, 0.2);
-            border-radius:20px;
-            text-align:center;
-            padding:18px;
-            color:#1DA1F2;
-        }
-         .stMarkdown .css-1offfwp p a{
-            color:#1DA1F2;
-        }
+        # .css-1p1nwyz{
+        #     border:1px solid rgba(49, 51, 63, 0.2);
+        #     border-radius:20px;
+        #     text-align:center;
+        #     padding:18px;
+        #     color:#1DA1F2;
+        # }
+        #  .stMarkdown .css-1offfwp p a{
+        #     color:#1DA1F2;
+        # }
 
         .css-6qob1r{
             background-color:#1DA1F2
