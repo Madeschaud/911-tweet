@@ -85,7 +85,7 @@ st.markdown("""
 @st.cache_data
 def load_data(nrows):
     data = pd.read_csv(DATA_URL, nrows=nrows)
-    data = data.head(5)
+    # data = data.head(5)
     return data[['tweet_text', 'class_label', 'disaster_year', 'place', 'disaster_type', 'disaster', 'actionable']]
 
 data = load_data(200)
