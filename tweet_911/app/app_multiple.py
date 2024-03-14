@@ -1,8 +1,6 @@
 import streamlit as st
 import pandas as pd
 import requests
-from streamlit_extras.switch_page_button import switch_page
-
 
 DATA_URL = 'tweet_911/app/data_streamlit/presentation.csv'
 
@@ -120,7 +118,6 @@ def mark_actionable():
         if round(pred, 2) > 0.3:
             col2.write(st.session_state.new_tweets[index])
     st.session_state.stage = 2
-    st.switch_page("pages/experience.py")
 
 
 

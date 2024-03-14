@@ -35,5 +35,6 @@ uvicorn         # web server
 #application
 streamlit
 requests
+streamlit-extras
 # streamlit_folium
 # geopandas
