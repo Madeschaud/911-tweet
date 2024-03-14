@@ -42,7 +42,7 @@ st.markdown("""
             padding-bottom:0px;
         }
 
-        .css-g1fkir p{
+        .css-1kbbaad p{
             border:1px solid rgba(49, 51, 63, 0.2)  !important;
             border-radius:20px;
             text-align:center;
@@ -98,7 +98,7 @@ def mark_disaster():
 def mark_actionable():
     print(st.session_state.new_tweets)
     for index in range(0, len(st.session_state.new_tweets)):
-        response = requests.get(f'{st.secrets.url_api.URL_API}/predict_actionable', { 'tweet': st.session_state.new_tweets[index] })
+        response = requests.get(f'{URL_API}/predict_actionable', { 'tweet': st.session_state.new_tweets[index] })
         prediction = response.json()
         pred = prediction['tweet_accurate']
         print(pred)
