@@ -70,6 +70,7 @@ st.markdown("""
 @st.cache_data
 def load_data(nrows):
     data = pd.read_csv(DATA_URL, nrows=nrows)
+    data = data.head(5)
     return data[['tweet_text', 'class_label', 'disaster_year', 'place', 'disaster_type', 'disaster', 'actionable']]
 
 data = load_data(200)
@@ -81,7 +82,7 @@ if 'display_tweet' not in st.session_state:
 
 def mark_disaster():
     for index in range(0, len(st.session_state.display_tweet)):
-        response = requests.get(f'{st.secrets.URL_API}/predict_disaster', { 'tweet': st.session_state.display_tweet.iloc[index] })
+        response = requests.get(f'{st.secrets['url_api']['URL_API']}/predict_disaster', { 'tweet': st.session_state.display_tweet.iloc[index] })
         prediction = response.json()
         pred = prediction['tweet_accurate']
         print(pred)
