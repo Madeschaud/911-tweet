@@ -15,10 +15,10 @@ st.markdown("""
         # .css-b3z5c9 { width: 100%; }
         # .css-1y4p8pa { max-width:70%}
         footer {visibility: hidden;}
-        # .css-10trblm {
-        #     color:#1DA1F2;
-        #     font-family: "Noto Sans", sans-serif;
-        # }
+        .css-10trblm {
+            color:#1DA1F2;
+            font-family: "Noto Sans", sans-serif;
+        }
         .css-q3bdcp { width: 100%; }
         button  {
             background-color:#1DA1F2 !important;
