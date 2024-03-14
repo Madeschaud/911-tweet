@@ -37,7 +37,7 @@ st.markdown("""
         }
         # .css-1p1nwyz .css-5rimss p
         # .css-90qg9c .css-5rimss p
-        css-90qg9c{
+        .css-90qg9c{
             border:1px solid rgba(49, 51, 63, 0.2)  !important;
             border-radius:20px;
             text-align:center;
