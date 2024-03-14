@@ -65,7 +65,7 @@ st.markdown("""
             background-color:white;
         }
         .css-90qg9c{
-            color:white;
+            color:rgba(49, 51, 63, 0.2);
         }
 
 
