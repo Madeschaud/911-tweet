@@ -68,6 +68,10 @@ st.markdown("""
         .e16nr0p34 hr{
             background-color:rgba(49, 51, 63, 0.2);
         }
+        .e1fqkh3o10{
+            display:none;
+            padding-top: 6rem;
+        }
 
 
     </style>
