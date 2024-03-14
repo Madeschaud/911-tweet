@@ -36,25 +36,25 @@ st.markdown("""
             padding-bottom:0px;
         }
 
-        .stMarkdown .e16nr0p34 p{
+        .egzxvld4 .e1tzin5v0 .stMarkdown .e16nr0p34 p{
             border:1px solid rgba(49, 51, 63, 0.2);
             border-radius:20px;
             text-align:center;
             padding:18px;
             color:white;
         }
-        .stMarkdown .e16nr0p34 p a{
+        .egzxvld4 .e1tzin5v0 .stMarkdown .e16nr0p34 p a{
             color:white;
         }
 
-        .egzxvld4 .e1tzin5v0 .stMarkdown .e16nr0p34 p{
+        .e1tzin5v1 .e1tzin5v0 .stMarkdown .e16nr0p34 p{
             border:1px solid rgba(49, 51, 63, 0.2);
             border-radius:20px;
             text-align:center;
             padding:18px;
             color:black;
         }
-        .e1tzin5v0 .stMarkdown .e16nr0p34 p a{
+        .e1tzin5v1 .stMarkdown .e16nr0p34 p a{
             color:black;
         }
 
